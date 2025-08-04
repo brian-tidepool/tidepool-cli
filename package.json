@@ -1,0 +1,72 @@
+{
+  "name": "tidepool-cli",
+  "version": "1.0.5",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "type": "module",
+  "bin": {
+    "tidepool-cli": "./bin/run.js"
+  },
+  "scripts": {
+    "cli": "node ./bin/run",
+    "build": "tsc -b",
+    "start": "node dist/main.js",
+    "dev": "tsc src/index.ts",
+    "prepack": "npm run build",
+    "install-version": "node -e \"const cp=require('child_process'); cp.execSync('npm run build', {stdio:'inherit'}); const packed=cp.execSync('npm pack', {encoding:'utf8'}).trim(); cp.execSync('npm install ' + packed, {stdio:'inherit'});\"",
+    "install-version-global": "node -e \"const{execSync}=require('child_process'),fs=require('fs');try{execSync('npm run build',{stdio:'inherit'});execSync('npm pack',{stdio:'inherit'});const p=JSON.parse(fs.readFileSync('package.json','utf8'));const f=`${p.name.replace(/^@/,'').replace(/\\//,'-')}-${p.version}.tgz`;execSync(`npm install -g ${f}`,{stdio:'inherit'});console.log('✓ Complete!')}catch(e){console.error('Error:',e.message);process.exit(1)}\"",
+    "patch": "npm version patch --no-git-tag-version",
+    "pack": "npm pack",
+    "install-current": "node -e \"const cp=require('child_process'); const packed=cp.execSync('npm pack --dry-run', {encoding:'utf8'}).trim(); cp.execSync('npm install -g ' + packed, {stdio:'inherit'});\"",
+    "patch-pack": "npm run patch && npm run pack",
+    "deploy": "npm run build && npm run pack && npm install -g tidepool-cli-1.0.4.tgz",
+    "deploy-full": "npm run patch && npm run build && npm run pack && npm install -g tidepool-cli-1.0.4.tgz",
+    "test-setup": "tidepool-cli cliConfigure --showEnv",
+    "test-dashboard": "tidepool-cli cliDashboard --below3 5 --below39 5 --drop 5 --lesstir70 5 --lesscgm70 3 --meetingTargets 3",
+    "test-list": "tidepool-cli cliListPatients --clinicId 633b559d1d64ad2c9471178b --tagId 6841e165edfe663ac4d8bff0",
+    "test-search": "tidepool-cli cliSearch --clinicId 633b559d1d64ad2c9471178b --tagId 6841e165edfe663ac4d8bff0 --searchTerm test",
+    "test-cleanup": "tidepool-cli cliDeleteList --clinicId 633b559d1d64ad2c9471178b --tagId 6841e165edfe663ac4d8bff0",
+    "workflow": "npm run deploy-full && npm run test-setup",
+    "workflow-test": "node scripts/workflow.js test",
+    "workflow-cleanup": "node scripts/workflow.js cleanup",
+    "workflow-deploy": "node scripts/workflow.js deploy",
+    "workflow-full": "node scripts/workflow.js full",
+    "workflow-help": "node scripts/workflow.js help",
+    "setup-env": "node scripts/setup-env.js",
+    "load-env": "node scripts/load-env.js",
+    "release": "node scripts/workflow.js deploy",
+    "test": "node scripts/workflow.js test",
+    "cleanup": "node scripts/workflow.js cleanup",
+    "full": "node scripts/workflow.js full"
+  },
+  "files": [
+    "/lib",
+    "/bin",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "dependencies": {
+    "@oclif/core": "^4.4.0",
+    "@oclif/plugin-help": "^5",
+    "@oclif/plugin-plugins": "^2.4.4",
+    "prepack": "^0.2.54",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.26.10",
+    "@types/node": "^18.19.112",
+    "@types/uuid": "^9.0.0",
+    "oclif": "^3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "oclif": {
+    "bin": "tidepool-cli",
+    "commands": "./lib/commands",
+    "dirname": "tidepool-cli",
+    "topicSeparator": " "
+  }
+}

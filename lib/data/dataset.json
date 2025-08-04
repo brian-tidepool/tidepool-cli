@@ -1,0 +1,25 @@
+{ "type": "upload",
+    "computerTime": "{{currentDateWithoutOffset}}",
+    "time": "{{currentDate}}",
+    "timezoneOffset": -300,
+    "conversionOffset": 0,
+    "timezone": "US/Eastern",
+    "timeProcessing": "utc-bootstrapping",
+    "version": "2.34.0",
+    "deviceTags": ["cgm", "bgm", "insulin-pump"],
+    "deviceTime": "{{currentDateWithoutOffset}}",
+    "deviceManufacturers": ["Tandem"],
+    "deviceModel": "10037177",
+    "deviceSerialNumber": "75079",
+    "deviceId": "tandemCIQ1003717775079",
+    "client": {
+        "name": "org.tidepool.uploader",
+        "version": "2.52.0",
+        "private": {
+            "blobId": "{{blobId}}",
+            "os": "darwin-x64-22.3.0"
+        }
+    },
+    "deduplicator": { "name": "org.tidepool.deduplicator.dataset.delete.origin"
+    }
+}

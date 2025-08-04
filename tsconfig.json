@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+      "allowImportingTsExtensions": false,
+    "allowArbitraryExtensions": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "declaration":true,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "lib/dateGenerator.js", "lib/resizeArray.js", "lib/addTag.ts", "lib/cbgPayload.ts", "lib/createPatient.ts", "lib/dateGenerator.ts", "lib/deletePatient.ts", "lib/getPatients.ts", "lib/index.ts", "lib/loginAndUploadData.ts", "lib/main.ts", "lib/patientList.ts", "lib/selectScenarios.ts", "lib/timeShifter.ts", "lib/uploadToCustodial.ts", "lib/Utils.ts", "lib/index.ts"],
+  "exclude": ["node_modules", "dist"]
+}
