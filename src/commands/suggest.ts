@@ -1,6 +1,6 @@
 // src/commands/suggest.ts
 import { Command, Flags, Args, Config } from '@oclif/core'
-import { ParameterHistory } from '../lib/history.js'
+import { ParameterHistory } from '../lib/commandHistory.js'
 
 export default class Suggest extends Command {
   static override description = 'Get parameter suggestions based on history'

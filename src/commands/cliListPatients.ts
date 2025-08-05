@@ -1,6 +1,6 @@
 // src/commands/hello.ts
 import { Command, Args, Flags } from "@oclif/core";
-import * as Get from "../lib/getPatients.js"
+import { fetchPatientsByClinicAndTag, Patient } from "../lib/fetchPatients.js"
 import { BaseCommand } from '../base-command.js'
 
 
@@ -39,12 +39,14 @@ export default class UserList extends BaseCommand<typeof UserList> {
         this.recordHistory();
        
 
-            const user = await Get.getPatients(this.credentials,
-                flags.clinicId,
-                flags.tagId) ;
-        console.log(`clinicId: ${flags.clinicId}, tagId: ${flags.tagId}`)
-         user!.data.forEach((user1, index) => {
-            console.log(`${index+1}.  fullName: ${user1.fullName}, id:${user1.id}`)
+        const patients: Patient[] | null = await fetchPatientsByClinicAndTag(this.credentials, flags.clinicId, flags.tagId);
+        console.log(`clinicId: ${flags.clinicId}, tagId: ${flags.tagId}`);
+        if (!patients || patients.length === 0) {
+            this.log('No patients found for the given clinic and tag.');
+            return;
+        }
+        patients.forEach((user1: Patient, index: number) => {
+            console.log(`${index + 1}.  fullName: ${user1.fullName}, id:${user1.id}`);
         });
 
       

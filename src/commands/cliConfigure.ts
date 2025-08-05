@@ -77,7 +77,7 @@ export default class Configure extends Command {
       return;
     }
 
-    // Set environment variables for current session
+    // Persist environment variables in a .env file in the project root
     if (flags.setEnv) {
       if (!flags.userName || !flags.password || !flags.baseUrl) {
         this.error('❌ All credentials are required for --set-env: --userName, --password, --baseUrl');
@@ -96,16 +96,24 @@ export default class Configure extends Command {
         return;
       }
 
+      // Write to .env file in project root using CredentialsManager
       try {
-        this.credentialsManager.setEnvironmentVariables(credentials);
-        this.log('✅ Environment variables set for current session:');
-        this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().userName}=${credentials.userName}`);
-        this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().password}=${'*'.repeat(credentials.password.length)}`);
-        this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().baseUrl}=${credentials.baseUrl}`);
-        this.log('\n💡 These variables are only set for the current session.');
-        this.log('   For permanent setup, set them in your shell profile or use system environment variables.');
+        const envPath = this.credentialsManager.writeEnvFile(credentials);
+        this.log('✅ .env file created/updated in your project root with your credentials.');
+        this.log('');
+        this.log('To load these variables in your shell:');
+        this.log('  # For Windows CMD:');
+        this.log('  for /f "delims==" %i in (".env") do set %i');
+        this.log('');
+        this.log('  # For PowerShell:');
+        this.log('  Get-Content .env | foreach { $name, $value = $_ -split "=", 2; Set-Item -Path env:$name -Value $value }');
+        this.log('');
+        this.log('  # For bash (WSL, Git Bash, etc):');
+        this.log('  export $(grep -v "^#" .env | xargs)');
+        this.log('');
+        this.log('💡 For permanent setup, add these variables to your system environment variables or shell profile.');
       } catch (error) {
-        this.error(`❌ Failed to set environment variables: ${error instanceof Error ? error.message : String(error)}`);
+        this.error(`❌ Failed to write .env file: ${error instanceof Error ? error.message : String(error)}`);
       }
       return;
     }

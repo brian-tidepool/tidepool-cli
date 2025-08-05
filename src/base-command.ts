@@ -1,5 +1,5 @@
 import { Command, Flags, Interfaces } from '@oclif/core'
-import { ParameterHistory } from './lib/history.js'
+import { ParameterHistory } from './lib/commandHistory.js'
 import { CredentialsManager, Credentials } from './lib/credentials.js';
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<typeof BaseCommand['baseFlags'] & T['flags']>
@@ -75,7 +75,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     const creds = this.credentials;
     console.log('record')
     console.log(command,args,flags,creds)
-    history.addEntry(command, args, flags,creds)
+    history.addEntry(command, args, flags, creds as unknown as Record<string, unknown>);
   }
 
   protected getParameterSuggestions(): Array<{ args: string[], flags: Record<string, any>, creds: Record<string,any> }> {

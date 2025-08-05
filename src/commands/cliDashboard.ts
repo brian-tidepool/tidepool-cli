@@ -1,6 +1,6 @@
 // src/commands/hello.ts
 import { Command, Args, Flags } from "@oclif/core";
-import * as Dashboard from "../lib/selectScenarios.js"
+import * as Dashboard from "../lib/dashboardScenarioSelector.js"
 import { BaseCommand } from '../base-command.js'
 
 

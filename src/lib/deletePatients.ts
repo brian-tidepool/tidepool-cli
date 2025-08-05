@@ -1,37 +1,39 @@
-import * as Delete from "./deletePatient.js";
-import * as Get from "./getPatients.js";
-import * as Utils from "./Utils.js";
+
+import * as deletePatient from "./deletePatient.js";
+import * as fetchPatients from "./fetchPatients.js";
+import * as utils from "./Utils.js";
 import { Credentials } from './credentials.js';
 
-
-
+/**
+ * Deletes all patients for a given clinic and tag.
+ * @param creds User credentials
+ * @param clinicId Clinic ID
+ * @param tagId Tag ID
+ */
 export async function deletePatients(
-    creds: Credentials,clinicId:string,tagId:string
-
-
+  creds: Credentials,
+  clinicId: string,
+  tagId: string
 ): Promise<void> {
-
-    let ids: string[] = []
-    do {
-        ids = []
-        const result3 = await Get.getPatients(creds, clinicId,tagId)
-
-        if (result3) {
-            console.log('IDs')
-            result3['data'].forEach((row, index) => { console.log(row.id); ids.push(row.id) })
-
-        }
-        else {
-            console.log('Failed to get')
-        }
-        for (let i = 0; i < ids.length; i++) {
-            console.log('IDs to delete')
-            console.log(ids[i])
-            await Utils.sleep(5000);
-            let resultDelete = await Delete.deletePatient(creds.userName,
-                creds.password,
-                creds.baseUrl, ids[i])
-        }
-        console.log(ids.length)
-    } while (ids.length > 0)
+  let ids: string[] = [];
+  do {
+    ids = [];
+    const result = await fetchPatients.fetchPatientsByClinicAndTag(creds, clinicId, tagId);
+    if (Array.isArray(result)) {
+      ids = result.map((row: { id: string }) => row.id);
+    } else {
+      console.warn('Failed to get patients or no data returned');
+    }
+    for (const id of ids) {
+      // Optionally, log which ID is being deleted:
+      // console.log(`Deleting patient ID: ${id}`);
+      await utils.sleep(5000);
+      await deletePatient.deletePatient(
+        creds,
+        id
+      );
+    }
+    // Optionally, log how many were deleted:
+    // console.log(`Deleted ${ids.length} patients in this batch.`);
+  } while (ids.length > 0);
 }

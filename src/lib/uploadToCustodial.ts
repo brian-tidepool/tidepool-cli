@@ -1,7 +1,7 @@
-import * as Payload from "./cbgPayload.js";
-import * as Upload from "./loginAndUploadData.js";
-import * as Utils from "./Utils.js";
-import * as Shift from "./timeShifter.js"
+import * as cbgPayload from "./cbgPayload.js";
+import { authenticateAndUploadData, UploadDataSet, UploadPostDataPayload } from "./authAndUploader.js";
+import * as utils from "./Utils.js";
+import * as jsonTimeShifter from "./jsonTimeShifter.js";
 import { Credentials } from './credentials.js';
 
 export async function uploadToCustodial(
@@ -15,12 +15,12 @@ export async function uploadToCustodial(
     credentials: Credentials
 ) {
     const increment = 5; // 5 minute intervals
-    const usage = Utils.calculatePercentageRoundDown(cgmUse)
-    const percentages = Utils.calculatePercentageRoundUp(tirPercent, usage.roundedDown)
+    const usage = utils.calculatePercentageRoundDown(cgmUse);
+    const percentages = utils.calculatePercentageRoundUp(tirPercent, usage.roundedDown);
     const cbgCounts = [percentages.roundedUp, percentages.remainder];
-    const fullCbgValues = Payload.duplicateEntries(cbgValues, cbgCounts);
+    const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
 
-    const cbgPayloadValues = await Payload.cbgPayload(start, end, increment, fullCbgValues);
+    const cbgPayloadValues = await cbgPayload.cbgPayload(start, end, increment, fullCbgValues);
     const temp = cbgPayloadValues[0];
     const { default: dataSet } = await import('../data/dataset.json', { with: { type: 'json' } });
 
@@ -28,12 +28,10 @@ export async function uploadToCustodial(
 
     }
 
-    const result = await Upload.loginAndCreatePost(
-        credentials.userName,
-        credentials.password,
-        credentials.baseUrl,
-        cbgPayloadValues, 
-        dataSet, 
+    const result = await authenticateAndUploadData(
+        credentials,
+        cbgPayloadValues as UploadPostDataPayload,
+        dataSet as UploadDataSet,
         userIdParam
     );
 
@@ -50,20 +48,18 @@ export async function uploadMedtronicToCustodial(
     userIdParam: string,
     credentials: Credentials
 ) {
-    const cbgPayloadValues = await Shift.shiftJsonFile('./data/medtronic.json', 7, 'shifted.json');
-    const temp = cbgPayloadValues[0];
+    const cbgPayloadValues = await jsonTimeShifter.shiftJsonFile('./data/medtronic.json', 7, 'shifted.json') as UploadPostDataPayload;
+    const temp = (Array.isArray(cbgPayloadValues) ? cbgPayloadValues[0] : cbgPayloadValues);
     const { default: dataSet } = await import('../data/medtronic_dataset.json', { with: { type: 'json' } });
 
     interface POSTResponse {
 
     }
 
-    const result = await Upload.loginAndCreatePost(
-        credentials.userName,
-        credentials.password,
-        credentials.baseUrl,
-        cbgPayloadValues, 
-        dataSet, 
+    const result = await authenticateAndUploadData(
+        credentials,
+        cbgPayloadValues as UploadPostDataPayload,
+        dataSet as UploadDataSet,
         userIdParam
     );
 

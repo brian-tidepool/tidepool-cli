@@ -1,6 +1,6 @@
 // src/commands/hello.ts
 import { Command, Args, Flags } from "@oclif/core";
-import * as Get from "../lib/getTags.js"
+import { fetchClinicsWithTags, ClinicWithTags } from "../lib/fetchTags.js"
 import { BaseCommand } from '../base-command.js'
 
 
@@ -36,15 +36,20 @@ export default class TagList extends BaseCommand<typeof TagList> {
             const { flags } = await this.parse(TagList);
             this.recordHistory();
 
-            const user = await Get.getTags(this.credentials
-            );
-            console.log(user)
-            user!.forEach((user1, index1) => {
-                user1.clinic.patientTags.forEach((user2, index2) => {
-                    console.log(`${index2 + 1}.  tagName: ${user2.name}, id:${user2.id}`)
-                }
-                )
-            });
+        const clinicsWithTags: ClinicWithTags[] | null = await fetchClinicsWithTags(this.credentials);
+        if (!clinicsWithTags || clinicsWithTags.length === 0) {
+            this.log('No clinics or tags found for the current user.');
+            return;
+        }
+        clinicsWithTags.forEach((clinicWithTags, clinicIdx) => {
+            if (clinicWithTags.clinic.patientTags.length === 0) {
+                this.log(`Clinic ${clinicIdx + 1} has no tags.`);
+            } else {
+                clinicWithTags.clinic.patientTags.forEach((tag, tagIdx) => {
+                    this.log(`${tagIdx + 1}. tagName: ${tag.name}, id: ${tag.id}`);
+                });
+            }
+        });
 
         
 

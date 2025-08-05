@@ -6,7 +6,7 @@
     "resolveJsonModule": true,
       "allowImportingTsExtensions": false,
     "allowArbitraryExtensions": true,
-    "outDir": "./lib",
+    "outDir": "./dist",
     "rootDir": "./src",
     "declaration":true,
     "strict": true,
@@ -15,6 +15,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "lib/dateGenerator.js", "lib/resizeArray.js", "lib/addTag.ts", "lib/cbgPayload.ts", "lib/createPatient.ts", "lib/dateGenerator.ts", "lib/deletePatient.ts", "lib/getPatients.ts", "lib/index.ts", "lib/loginAndUploadData.ts", "lib/main.ts", "lib/patientList.ts", "lib/selectScenarios.ts", "lib/timeShifter.ts", "lib/uploadToCustodial.ts", "lib/Utils.ts", "lib/index.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "lib"]
 }

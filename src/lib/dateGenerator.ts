@@ -1,45 +1,33 @@
 
-import * as Utils from './Utils';
-
+/**
+ * Generates a 2D array of Date objects, where each row represents a day and each column is a time increment.
+ * @param startDate The start date
+ * @param endDate The end date (exclusive)
+ * @param incrementMinutes The interval in minutes between each date
+ * @returns 2D array of Date objects
+ */
 export function generateDateArray2D(
   startDate: Date,
   endDate: Date,
   incrementMinutes: number
 ): Date[][] {
   const result: Date[][] = [];
-  
-  // Create a copy of start date to avoid mutating the original
   let currentDate = new Date(startDate);
-  
   while (currentDate < endDate) {
     const dayRow: Date[] = [];
-    //currentDate.setMinutes(currentDate.getMinutes()-5);
     const dayStart = new Date(currentDate);
     const dayEnd = new Date(currentDate);
-    dayEnd.setDate(dayStart.getDate()+1); // End of current day
-    //console.log('dayStart',dayStart,dayEnd,endDate)
-    // Generate dates for current day
+    dayEnd.setDate(dayStart.getDate() + 1);
     const dayIterator = new Date(dayStart);
-    //console.log('di',dayIterator);
-    while (dayIterator < endDate && dayIterator < dayEnd  ) {
+    while (dayIterator < endDate && dayIterator < dayEnd) {
       dayRow.push(new Date(dayIterator));
       dayIterator.setMinutes(dayIterator.getMinutes() + incrementMinutes);
-      if (dayIterator >= endDate){
-        console.log('dibetween',dayIterator);
-      }      
     }
-    //console.log('diafter',dayIterator.getDate());
-    // Only add the row if it has dates
     if (dayRow.length > 0) {
       result.push(dayRow);
     }
-    
-    // Move to next day
-    currentDate= new Date(dayIterator);
-    //console.log('length',dayRow.length)
-    //currentDate.setHours(0, 0, 0, 0); // Reset to start of day
+    currentDate = new Date(dayIterator);
   }
-  
   return result;
 }
 

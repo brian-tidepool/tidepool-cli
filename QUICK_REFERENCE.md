@@ -6,7 +6,7 @@
 # Install globally
 npm install -g tidepool-cli
 
-# Configure credentials
+# Configure credentials (uses secure Credentials object)
 tidepool-cli configure --userName "user@tidepool.org" --password "password" --baseUrl "https://api.tidepool.org"
 ```
 
@@ -16,15 +16,19 @@ tidepool-cli configure --userName "user@tidepool.org" --password "password" --ba
 |---------|-------------|---------|
 | `configure` | Set up credentials | `tidepool-cli configure -u "user" -p "pass" -b "https://api.tidepool.org"` |
 | `dashboard` | Create test dashboard | `tidepool-cli dashboard --below3 10 --below39 8` |
+| `dashboard:offset` | Create dashboard with time offset | `tidepool-cli dashboard:offset --below3 5 --below39 5` |
 | `list:patients` | List patients by tag | `tidepool-cli list:patients --clinicId "clinic-id"` |
 | `search` | Search patients | `tidepool-cli search "diabetes"` |
+| `list:clinics` | List available clinics | `tidepool-cli list:clinics` |
+| `list:tags` | List available tags | `tidepool-cli list:tags` |
 | `delete:list` | Delete patients by tag | `tidepool-cli delete:list --tagId "tag-id"` |
+| `suggest` | Get command suggestions | `tidepool-cli suggest` |
 
 ## Core API Functions
 
 ### Authentication
 ```typescript
-import { CredentialsManager, Credentials } from './lib/credentials.js';
+import { CredentialsManager } from './lib/credentials.js';
 
 const manager = new CredentialsManager();
 const credentials = manager.loadCredentials();
@@ -32,21 +36,24 @@ const credentials = manager.loadCredentials();
 
 ### Patient Management
 ```typescript
-import { createPatient, getPatients, deletePatient } from './lib/index.js';
+import { createPatient } from './lib/createPatient.js';
+import { fetchPatientsByClinicAndTag } from './lib/fetchPatients.js';
+import { deletePatient } from './lib/deletePatient.js';
 
 // Create patient
-const patientId = await createPatient(username, password, baseUrl, clinicId, payload);
+const patientId = await createPatient(credentials, clinicId, payload);
 
 // Get patients
-const patients = await getPatients(credentials, clinicId, tagId);
+const patients = await fetchPatientsByClinicAndTag(credentials, clinicId, tagId);
 
 // Delete patient
-const success = await deletePatient(username, password, baseUrl, patientId);
+const success = await deletePatient(credentials, patientId);
 ```
 
 ### Dashboard Creation
 ```typescript
-import { createDashboard, createMedtronicDashboard } from './lib/selectScenarios.js';
+import { createDashboard } from './lib/dashboardScenarioSelector.js';
+import { createMedtronicDashboard } from './lib/dashboardScenarioSelector.js';
 
 const tirCounts = {
   "Time below 3.0 mmol/L > 1%": 10,
@@ -60,13 +67,10 @@ await createMedtronicDashboard(5, clinicId, tagId, credentials);
 
 ### Data Upload
 ```typescript
-import { uploadToCustodial, loginAndCreatePost } from './lib/index.js';
+import { uploadToCustodial } from './lib/uploadToCustodial.js';
 
 // Upload CBG data
-await uploadToCustodial(start, end, clinicId, [3.9, 10.1], 75, 288, patientId);
-
-// Upload custom data
-await loginAndCreatePost(username, password, baseUrl, postData, dataSet, userId);
+await uploadToCustodial(start, end, clinicId, [3.9, 10.1], 75, 288, patientId, credentials);
 ```
 
 ### Time Shifting
@@ -147,7 +151,7 @@ try {
 ### 1. Create Test Dashboard
 ```typescript
 import { CredentialsManager } from './lib/credentials.js';
-import { createDashboard } from './lib/selectScenarios.js';
+import { createDashboard } from './lib/dashboardScenarioSelector.js';
 
 const manager = new CredentialsManager();
 const credentials = manager.loadCredentials();
@@ -163,11 +167,12 @@ await createDashboard(tirCounts, 14, "clinic-id", "tag-id", credentials);
 
 ### 2. List and Search Patients
 ```typescript
-import { getPatients, searchPatients } from './lib/index.js';
+import { fetchPatientsByClinicAndTag } from './lib/fetchPatients.js';
+import { searchPatients } from './lib/patientSearch.js';
 
 // List patients
-const patients = await getPatients(credentials, clinicId, tagId);
-patients?.data.forEach(patient => {
+const patients = await fetchPatientsByClinicAndTag(credentials, clinicId, tagId);
+patients?.forEach(patient => {
   console.log(`${patient.fullName}: ${patient.id}`);
 });
 
@@ -209,14 +214,14 @@ await shiftJsonFile('patient-data.json', 'JST', 'shifted-data.json');
 
 ### Common Issues
 
-1. **Authentication Error**: Set environment variables or run `tidepool-cli configure --set-env`
+1. **Authentication Error**: Ensure credentials are set using `tidepool-cli configure` (uses Credentials object)
 2. **Network Error**: Check API endpoint accessibility
 3. **Invalid Parameters**: Verify all required flags are provided
 4. **Missing Environment Variables**: Run `tidepool-cli configure --check` to verify setup
 
 ### Debug Tips
 
-- Most functions include console.log statements for debugging
+- All functions use clear, scoped variable names and consistent import naming
 - Check environment variables with `tidepool-cli configure --check`
 - Validate parameters before API calls
 - Use try-catch blocks for error handling
@@ -229,7 +234,6 @@ Import types for full TypeScript support:
 import type {
   Credentials,
   Patient,
-  PatientsList,
   TIRCounts,
   PercentageResultRoundedUp
 } from './types.js';
@@ -244,8 +248,8 @@ import type {
 
 ## Security Considerations
 
-- Credentials are managed via environment variables only
-- No credential files are stored on disk
+- Credentials are managed via the Credentials object and stored securely
+- No plain-text credential files are stored on disk
 - Session tokens are managed automatically
 - Use different accounts for development and production
-- Validate all input parameters before API calls 
+- Validate all input parameters before API calls

@@ -24,6 +24,9 @@ npm install tidepool-cli
 
 ```bash
 # Set up your credentials
+# Now uses environment variables or the configure command for secure credential management
+# All commands use a Credentials object for authentication
+
 tidepool-cli configure --userName "user@tidepool.org" --password "password" --baseUrl "https://api.tidepool.org"
 ```
 
@@ -48,9 +51,11 @@ tidepool-cli delete:list
 - **Patient Management**: Create, list, search, and delete patients
 - **Data Upload**: Upload CBG (Continuous Blood Glucose) data to patients
 - **Dashboard Creation**: Generate test dashboards with various TIR (Time in Range) scenarios
-- **Credential Management**: Secure storage and management of API credentials
+- **Credential Management**: Secure storage and management of API credentials using a Credentials object
 - **Time Shifting**: Adjust timestamps in data files for testing purposes
 - **TypeScript Support**: Full type definitions for development
+- **Consistent Imports**: All local modules use consistent and standard import naming
+- **BaseCommand**: All commands (except configure) extend a shared BaseCommand for credential and flag handling
 
 ## 📋 Available Commands
 
@@ -96,9 +101,9 @@ npm run dev
 ```
 tidepool-cli/
 ├── src/
-│   ├── commands/          # CLI command implementations
-│   ├── lib/              # Core library functions
-│   ├── base-command.ts   # Base command class
+│   ├── commands/          # CLI command implementations (all extend BaseCommand)
+│   ├── lib/              # Core library functions (with consistent import naming)
+│   ├── base-command.ts   # Base command class (handles credentials and flags)
 │   └── index.ts          # Main entry point
 ├── lib/                  # Compiled JavaScript output
 ├── bin/                  # CLI executable scripts
@@ -110,13 +115,13 @@ tidepool-cli/
 
 ### Core Components
 
-- **BaseCommand**: Abstract base class for all CLI commands
-- **CredentialsManager**: Handles authentication credential storage
-- **Patient Management**: Functions for creating, listing, and deleting patients
+- **BaseCommand**: Abstract base class for all CLI commands (except configure)
+- **CredentialsManager**: Handles authentication credential storage and loading
+- **Patient Management**: Functions for creating, listing, and deleting patients (all use Credentials object)
 - **Dashboard Creation**: Functions for generating test dashboards
 - **Data Upload**: Functions for uploading CBG and other data
 - **Time Shifting**: Utilities for adjusting timestamps in data files
-- **Utility Functions**: Helper functions for common operations
+- **Utility Functions**: Helper functions for common operations (with clear, scoped variable names)
 
 ## 🔌 API Usage
 
@@ -124,8 +129,8 @@ tidepool-cli/
 
 ```typescript
 import { CredentialsManager } from './lib/credentials.js';
-import { createDashboard } from './lib/selectScenarios.js';
-import { getPatients } from './lib/getPatients.js';
+import { createDashboard } from './lib/dashboardScenarioSelector.js';
+import { fetchPatientsByClinicAndTag } from './lib/fetchPatients.js';
 
 async function main() {
   // Load credentials
@@ -142,8 +147,8 @@ async function main() {
   await createDashboard(tirCounts, 14, "clinic-id", "tag-id", credentials);
   
   // List patients
-  const patients = await getPatients(credentials, "clinic-id", "tag-id");
-  console.log(`Created ${patients?.data.length || 0} patients`);
+  const patients = await fetchPatientsByClinicAndTag(credentials, "clinic-id", "tag-id");
+  console.log(`Created ${patients?.length || 0} patients`);
 }
 
 main().catch(console.error);
@@ -155,7 +160,6 @@ main().catch(console.error);
 import type {
   Credentials,
   Patient,
-  PatientsList,
   TIRCounts
 } from './types.js';
 
@@ -192,7 +196,7 @@ try {
 
 - Credentials are stored securely in the user's home directory
 - Session tokens are managed automatically
-- All API calls use proper authentication
+- All API calls use proper authentication via the Credentials object
 - Input validation is performed on all parameters
 
 ## 📊 Data Models
@@ -236,7 +240,7 @@ When contributing to the tidepool-cli project:
 
 1. Follow the existing TypeScript patterns
 2. Add proper error handling
-3. Include console.log statements for debugging
+3. Use clear, scoped variable names and consistent import naming
 4. Update documentation for new APIs
 5. Test with various credential configurations
 6. Ensure all functions are properly typed
@@ -263,4 +267,4 @@ For issues and questions:
 
 ---
 
-**Note**: This CLI tool is designed for testing and development purposes. Use appropriate credentials and follow security best practices in production environments. 
+**Note**: This CLI tool is designed for testing and development purposes. Use appropriate credentials and follow security best practices in production environments.

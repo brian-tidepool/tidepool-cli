@@ -1,6 +1,6 @@
 // src/commands/hello.ts
 import { Command,Args,Flags } from "@oclif/core";
-import * as Search from "../lib/patientList.js";
+import * as Search from "../lib/patientSearch.js";
 import { BaseCommand } from '../base-command.js'
 import { Credentials } from '../lib/credentials.js';
 
@@ -39,12 +39,23 @@ export default class UsersSearch  extends BaseCommand<typeof UsersSearch> {
       }) 
     };
 
-	public async run(): Promise<void> {
-		
+    public async run(): Promise<void> {
+        
     
             const {args,flags} = await this.parse(UsersSearch);
-            const user = await Search.searchPatients(this.credentials,flags.clinicId, flags.tagId,args.keyword)
+            // Updated to match new searchPatients signature with all parameters
+            const user = await Search.searchPatients(
+                this.credentials,
+                flags.clinicId,
+                flags.tagId,
+                args.keyword,
+                0, // offset
+                '+fullName', // sort
+                'cgm', // sortType
+                '1d', // period
+                50 // limit
+            );
             
        
-	}
+    }
 }
