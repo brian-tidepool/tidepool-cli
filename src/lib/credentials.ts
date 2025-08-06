@@ -1,3 +1,7 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
+
 export interface Credentials {
   userName: string;
   password: string;
@@ -5,77 +9,70 @@ export interface Credentials {
 }
 
 export class CredentialsManager {
-  private readonly ENV_USERNAME = 'TIDEPOOL_USERNAME';
-  private readonly ENV_PASSWORD = 'TIDEPOOL_PASSWORD';
-  private readonly ENV_BASE_URL = 'TIDEPOOL_BASE_URL';
+  private readonly CONFIG_DIR = path.join(os.homedir(), '.tidepool-cli');
+  private readonly CREDENTIALS_FILE = path.join(this.CONFIG_DIR, 'credentials.json');
 
-  writeEnvFile(credentials: Credentials, dir?: string): string {
-    const envVars = this.getEnvironmentVariableNames();
-    const envContent =
-      `${envVars.userName}=${credentials.userName}\n` +
-      `${envVars.password}=${credentials.password}\n` +
-      `${envVars.baseUrl}=${credentials.baseUrl}\n`;
-    const fs = require('fs');
-    const pathLib = require('path');
-    const envPath = pathLib.resolve(dir || process.cwd(), '.env');
-    fs.writeFileSync(envPath, envContent, { encoding: 'utf8' });
-    return envPath;
+  private ensureConfigDir(): void {
+    if (!fs.existsSync(this.CONFIG_DIR)) {
+      fs.mkdirSync(this.CONFIG_DIR, { recursive: true });
+    }
+  }
+
+  saveCredentials(credentials: Credentials): void {
+    this.ensureConfigDir();
+    fs.writeFileSync(this.CREDENTIALS_FILE, JSON.stringify(credentials, null, 2));
   }
 
   loadCredentials(): Credentials {
-    const envCredentials = this.loadFromEnvironment();
-    if (!envCredentials) {
+    const credentials = this.getCurrentValues();
+    if (!credentials.userName || !credentials.password || !credentials.baseUrl) {
       throw new Error(
-        'Credentials not found. Please set the following environment variables:\n' +
-        `   ${this.ENV_USERNAME}=your-username@example.com\n` +
-        `   ${this.ENV_PASSWORD}=your-password\n` +
-        `   ${this.ENV_BASE_URL}=https://api.tidepool.org\n\n` +
-        'You can also run "tidepool-cli configure --show-env" to see the required variables.'
+        'Credentials not found. Please configure using:\n' +
+        'tidepool-cli configure --userName <email> --password <password> --baseUrl <url>'
       );
     }
-    return envCredentials;
-  }
-
-  private loadFromEnvironment(): Credentials | null {
-    const userName = process.env[this.ENV_USERNAME];
-    const password = process.env[this.ENV_PASSWORD];
-    const baseUrl = process.env[this.ENV_BASE_URL];
-    if (userName && password && baseUrl) {
-      return { userName, password, baseUrl };
-    }
-    return null;
-  }
-
-  setEnvironmentVariables(credentials: Credentials): void {
-    process.env[this.ENV_USERNAME] = credentials.userName;
-    process.env[this.ENV_PASSWORD] = credentials.password;
-    process.env[this.ENV_BASE_URL] = credentials.baseUrl;
+    return credentials;
   }
 
   validateCredentials(credentials: Credentials): boolean {
     return !!(credentials.userName && credentials.password && credentials.baseUrl);
   }
 
-  getEnvironmentVariableNames(): { userName: string; password: string; baseUrl: string } {
-    return {
-      userName: this.ENV_USERNAME,
-      password: this.ENV_PASSWORD,
-      baseUrl: this.ENV_BASE_URL,
-    };
-  }
-
   hasCredentials(): boolean {
-    return this.loadFromEnvironment() !== null;
+    try {
+      if (fs.existsSync(this.CREDENTIALS_FILE)) {
+        const content = fs.readFileSync(this.CREDENTIALS_FILE, 'utf8');
+        const credentials = JSON.parse(content);
+        return this.validateCredentials(credentials);
+      }
+    } catch (error) {
+      console.error('Error checking credentials:', error);
+    }
+    return false;
   }
 
-  getCurrentEnvironmentValues(): { userName: string; password: string; baseUrl: string } {
-    const userName = process.env[this.ENV_USERNAME] || '';
-    const password = process.env[this.ENV_PASSWORD] || '';
-    const baseUrl = process.env[this.ENV_BASE_URL] || '';
+  getCurrentValues(): Credentials {
+    try {
+      if (fs.existsSync(this.CREDENTIALS_FILE)) {
+        const content = fs.readFileSync(this.CREDENTIALS_FILE, 'utf8');
+        const credentials = JSON.parse(content);
+        if (this.validateCredentials(credentials)) {
+          return credentials;
+        }
+      }
+    } catch (error) {
+      console.error('Error reading credentials:', error);
+    }
     return {
-      userName,
-      password: password ? '***' : '',
-      baseUrl,
+      userName: '',
+      password: '',
+      baseUrl: ''
     };
+  }
+
+  deleteCredentials(): void {
+    if (fs.existsSync(this.CREDENTIALS_FILE)) {
+      fs.unlinkSync(this.CREDENTIALS_FILE);
+    }
   }
 }

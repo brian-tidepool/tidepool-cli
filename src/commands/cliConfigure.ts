@@ -7,8 +7,8 @@ export default class Configure extends Command {
   static examples = [
     '<%= config.bin %> <%= command.id %> --userName "john.doe@example.com" --password "your-password" --baseUrl "https://api.tidepool.org"',
     '<%= config.bin %> <%= command.id %> -u "john.doe@example.com" -p "your-password" -b "https://api.tidepool.org"',
-    '<%= config.bin %> <%= command.id %> --show-env',
-    '<%= config.bin %> <%= command.id %> --set-env',
+    '<%= config.bin %> <%= command.id %> --showConfig',
+    '<%= config.bin %> <%= command.id %> --reset',
   ];
 
   static flags = {
@@ -28,18 +28,14 @@ export default class Configure extends Command {
       required: false,
       char: 'b'
     }),
-    showEnv: Flags.boolean({
-      description: 'Show environment variable names for configuration',
-      char: 'e'
-    }),
-    setEnv: Flags.boolean({
-      description: 'Set environment variables for current session',
-      char: 's'
-    }),
-    check: Flags.boolean({
-      description: 'Check current environment variable status',
+    showConfig: Flags.boolean({
+      description: 'Show current configuration',
       char: 'c'
     }),
+    reset: Flags.boolean({
+      description: 'Reset stored credentials',
+      char: 'r'
+    })
   };
 
   private credentialsManager = new CredentialsManager();
@@ -47,97 +43,45 @@ export default class Configure extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(Configure);
 
-    // Show environment variable names
-    if (flags.showEnv) {
-      const envVars = this.credentialsManager.getEnvironmentVariableNames();
-      this.log('📋 Environment Variables:');
-      this.log(`   ${envVars.userName}=your-username@example.com`);
-      this.log(`   ${envVars.password}=your-password`);
-      this.log(`   ${envVars.baseUrl}=https://api.tidepool.org`);
-      this.log('\n💡 You can set these environment variables instead of using this command.');
-      this.log('🔒 Environment variables are more secure than storing credentials in files.');
+    if (flags.reset) {
+      this.credentialsManager.deleteCredentials();
+      this.log('✅ Credentials have been reset');
       return;
     }
 
-    // Check current environment variable status
-    if (flags.check) {
-      const currentValues = this.credentialsManager.getCurrentEnvironmentValues();
+    if (flags.showConfig) {
+      const currentValues = this.credentialsManager.getCurrentValues();
       const hasCredentials = this.credentialsManager.hasCredentials();
       
-      this.log('🔍 Current Environment Variable Status:');
-      this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().userName}: ${currentValues.userName || 'Not set'}`);
-      this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().password}: ${currentValues.password || 'Not set'}`);
-      this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().baseUrl}: ${currentValues.baseUrl || 'Not set'}`);
+      this.log('🔍 Current Configuration:');
+      this.log(`   Username: ${currentValues.userName || 'Not set'}`);
+      this.log(`   Password: ${currentValues.password || 'Not set'}`);
+      this.log(`   Base URL: ${currentValues.baseUrl || 'Not set'}`);
       
       if (hasCredentials) {
-        this.log('\n✅ All credentials are properly configured via environment variables!');
+        this.log('\n✅ Credentials are properly configured!');
       } else {
-        this.log('\n❌ Missing environment variables. Use --show-env to see required variables.');
+        this.log('\n❌ Missing credentials. Use the following command to configure:');
+        this.log('   tidepool-cli configure --userName <email> --password <password> --baseUrl <url>');
       }
       return;
     }
 
-    // Persist environment variables in a .env file in the project root
-    if (flags.setEnv) {
-      if (!flags.userName || !flags.password || !flags.baseUrl) {
-        this.error('❌ All credentials are required for --set-env: --userName, --password, --baseUrl');
-        this.log('\n💡 Use --show-env to see environment variable options.');
-        return;
-      }
-
-      const credentials: Credentials = {
-        userName: flags.userName,
-        password: flags.password,
-        baseUrl: flags.baseUrl,
-      };
-
-      if (!this.credentialsManager.validateCredentials(credentials)) {
-        this.error('❌ Invalid credentials format. All fields must be non-empty.');
-        return;
-      }
-
-      // Write to .env file in project root using CredentialsManager
-      try {
-        const envPath = this.credentialsManager.writeEnvFile(credentials);
-        this.log('✅ .env file created/updated in your project root with your credentials.');
-        this.log('');
-        this.log('To load these variables in your shell:');
-        this.log('  # For Windows CMD:');
-        this.log('  for /f "delims==" %i in (".env") do set %i');
-        this.log('');
-        this.log('  # For PowerShell:');
-        this.log('  Get-Content .env | foreach { $name, $value = $_ -split "=", 2; Set-Item -Path env:$name -Value $value }');
-        this.log('');
-        this.log('  # For bash (WSL, Git Bash, etc):');
-        this.log('  export $(grep -v "^#" .env | xargs)');
-        this.log('');
-        this.log('💡 For permanent setup, add these variables to your system environment variables or shell profile.');
-      } catch (error) {
-        this.error(`❌ Failed to write .env file: ${error instanceof Error ? error.message : String(error)}`);
-      }
-      return;
-    }
-
-    // Legacy support - show help for environment variable setup
+    // If no flags are provided, show help
     if (!flags.userName && !flags.password && !flags.baseUrl) {
-      this.log('🔧 Tidepool CLI now uses environment variables for credential management.');
-      this.log('   This is more secure than storing credentials in files.\n');
+      this.log('🔧 Configure Tidepool CLI credentials\n');
       this.log('📋 Available options:');
-      this.log('   --show-env     Show required environment variable names');
-      this.log('   --set-env      Set environment variables for current session');
-      this.log('   --check        Check current environment variable status');
-      this.log('\n💡 For permanent setup, set these environment variables:');
-      this.log('   TIDEPOOL_USERNAME=your-username@example.com');
-      this.log('   TIDEPOOL_PASSWORD=your-password');
-      this.log('   TIDEPOOL_BASE_URL=https://api.tidepool.org');
+      this.log('   --userName, -u    Set username/email');
+      this.log('   --password, -p    Set password');
+      this.log('   --baseUrl, -b     Set API base URL');
+      this.log('   --showConfig, -c  Show current configuration');
+      this.log('   --reset, -r       Reset stored credentials');
       return;
     }
 
     // Validate that all required flags are provided
     if (!flags.userName || !flags.password || !flags.baseUrl) {
       this.error('❌ All credentials are required: --userName, --password, --baseUrl');
-      this.log('\n💡 Use --show-env to see environment variable options.');
-      this.log('   Use --set-env to set environment variables for current session.');
       return;
     }
 
@@ -153,17 +97,14 @@ export default class Configure extends Command {
       return;
     }
 
-    // Set environment variables for current session
     try {
-      this.credentialsManager.setEnvironmentVariables(credentials);
-      this.log('✅ Credentials set as environment variables for current session:');
-      this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().userName}=${credentials.userName}`);
-      this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().password}=${'*'.repeat(credentials.password.length)}`);
-      this.log(`   ${this.credentialsManager.getEnvironmentVariableNames().baseUrl}=${credentials.baseUrl}`);
-      this.log('\n💡 These variables are only set for the current session.');
-      this.log('   For permanent setup, set them in your shell profile or use system environment variables.');
+      this.credentialsManager.saveCredentials(credentials);
+      this.log('✅ Credentials saved successfully:');
+      this.log(`   Username: ${credentials.userName}`);
+      this.log(`   Password: ${'*'.repeat(credentials.password.length)}`);
+      this.log(`   Base URL: ${credentials.baseUrl}`);
     } catch (error) {
-      this.error(`❌ Failed to set credentials: ${error instanceof Error ? error.message : String(error)}`);
+      this.error(`❌ Failed to save credentials: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 }
