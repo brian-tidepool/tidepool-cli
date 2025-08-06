@@ -1,16 +1,18 @@
 
 import { Credentials } from './credentials.js';
 
-// Define a more descriptive type for a clinic
-export interface Clinic {
-  id: string;
-  name: string;
+// Define clinic data structure
+export interface ClinicData {
+  clinic: {
+    id: string;
+    name: string;
+  };
 }
 
 // API response type for clinics
-export interface ClinicsResponse {
-  clinics: Clinic[];
-}
+export type ClinicsResponse = ClinicData[];
+
+
 
 /**
  * Fetches clinics for a clinician using Tidepool API.
@@ -19,7 +21,7 @@ export interface ClinicsResponse {
  */
 export async function fetchClinicsByCredentials(
   creds: Credentials
-): Promise<Clinic[] | null> {
+): Promise<ClinicsResponse | null> {
   try {
     // Step 1: Login with basic auth
     const loginResponse = await fetch(`${creds.baseUrl}/auth/login`, {
@@ -57,10 +59,10 @@ export async function fetchClinicsByCredentials(
     }
 
     const clinicsData: ClinicsResponse = await clinicsResponse.json();
-    if (!Array.isArray(clinicsData.clinics)) {
+    if (!Array.isArray(clinicsData)) {
       throw new Error('Unexpected clinics response format.');
     }
-    return clinicsData.clinics;
+    return clinicsData;
   } catch (error) {
     if (error instanceof Error) {
       console.error('Error in fetchClinicsByCredentials:', error.message);

@@ -73,8 +73,6 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     const args = Object.values(this.args).filter(Boolean) as string[]
     const flags = this.flags || {}
     const creds = this.credentials;
-    console.log('record')
-    console.log(command,args,flags,creds)
     history.addEntry(command, args, flags, creds as unknown as Record<string, unknown>);
   }
 

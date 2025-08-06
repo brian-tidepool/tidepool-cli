@@ -1,6 +1,6 @@
 // src/commands/hello.ts
 import { Command, Args, Flags } from "@oclif/core";
-import { fetchClinicsByCredentials, Clinic } from "../lib/fetchClinics.js"
+import { fetchClinicsByCredentials, ClinicData} from "../lib/fetchClinics.js"
 import { BaseCommand } from '../base-command.js'
 
 
@@ -27,13 +27,13 @@ export default class ClinicList extends BaseCommand<typeof ClinicList> {
         
 
 
-        const clinics: Clinic[] | null = await fetchClinicsByCredentials(this.credentials);
+        const clinics: ClinicData[] | null = await fetchClinicsByCredentials(this.credentials);
         if (!clinics || clinics.length === 0) {
             this.log('No clinics found for the current user.');
             return;
         }
         clinics.forEach((clinic, index) => {
-            this.log(`${index + 1}. clinicName: ${clinic.name}, id: ${clinic.id}`);
+            this.log(`${index + 1}. clinicName: ${clinic.clinic.name}, id: ${clinic.clinic.id}`);
         });
     }
 }
