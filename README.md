@@ -14,36 +14,46 @@ A comprehensive command-line interface tool for managing Tidepool data, patients
 
 ```bash
 # Install globally
-npm install -g tidepool-cli
-
-# Or install locally
-npm install tidepool-cli
+npm run workflow-deploy
 ```
 
 ### Configuration
 
 ```bash
 # Set up your credentials
-# Now uses environment variables or the configure command for secure credential management
+# Saves credentials in a file locally
 # All commands use a Credentials object for authentication
 
-tidepool-cli configure --userName "user@tidepool.org" --password "password" --baseUrl "https://api.tidepool.org"
+tidepool-cli cliConfigure --userName "user@tidepool.org" --password "password" --baseUrl "https://api.tidepool.org"
 ```
 
 ### Basic Usage
 
 ```bash
-# Create a test dashboard
-tidepool-cli dashboard --below3 10 --below39 8
+# Get help for command usage
+tidepool-cli cliListPatients --help
 
-# List patients
-tidepool-cli list:patients
+# Get command history
+tidepool-cli suggest cliListPatients 
+
+# List clinics
+tidepool-cli cliListClinics
+
+# List tags
+tidepool-cli cliListTags -g 633b559d1d64ad2c9471178b
 
 # Search for patients
-tidepool-cli search "diabetes"
+tidepool-cli cliSearch "test" --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0 
 
-# Clean up test data
-tidepool-cli delete:list
+# Create a dashboard 
+tidepool-cli cliDashboard --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0 --below3=1 --below39=1 --drop=1 --lesstir70=1 --lesscgm70=1 --meetingTargets=1
+
+#Create a dashboard where the last data point is offset by minutes
+tidepool-cli cliDashboardOffset --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0 --below3=1 --below39=1 --drop=1 --lesstir70=1 --lesscgm70=1 --meetingTargets=1 --offset=1440
+
+#Delete users by tag id in a clinic
+tidepool-cli cliDeleteList --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0
+
 ```
 
 ## 🎯 Key Features
@@ -61,14 +71,14 @@ tidepool-cli delete:list
 
 | Command | Description |
 |---------|-------------|
-| `configure` | Configure credentials for the CLI |
-| `dashboard` | Create a full dashboard of test users |
-| `dashboard:offset` | Create dashboard with time offset |
-| `list:patients` | List patients by tag ID |
-| `search` | Search for patients by keyword |
-| `list:clinics` | List available clinics |
-| `list:tags` | List available tags |
-| `delete:list` | Delete patients by tag ID |
+| `cliConfigure` | Configure credentials for the CLI |
+| `cliDashboard` | Create a full dashboard of test users |
+| `cliDashboardOffset` | Create dashboard with time offset |
+| `cliListPatients` | List patients by tag ID |
+| `cliSearch` | Search for patients by keyword |
+| `cliListClinics` | List available clinics |
+| `cliListTags` | List available tags |
+| `cliDeleteList` | Delete patients by tag ID |
 | `suggest` | Get command suggestions based on history |
 
 ## 🔧 Development

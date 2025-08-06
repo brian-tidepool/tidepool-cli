@@ -4,25 +4,25 @@
 
 ```bash
 # Install globally
-npm install -g tidepool-cli
+npm run workflow-deploy
 
 # Configure credentials (uses secure Credentials object)
-tidepool-cli configure --userName "user@tidepool.org" --password "password" --baseUrl "https://api.tidepool.org"
+tidepool-cli cliConfigure --userName "user@tidepool.org" --password "password" --baseUrl "https://api.tidepool.org"
 ```
 
 ## Common CLI Commands
 
 | Command | Description | Example |
 |---------|-------------|---------|
-| `configure` | Set up credentials | `tidepool-cli configure -u "user" -p "pass" -b "https://api.tidepool.org"` |
-| `dashboard` | Create test dashboard | `tidepool-cli dashboard --below3 10 --below39 8` |
-| `dashboard:offset` | Create dashboard with time offset | `tidepool-cli dashboard:offset --below3 5 --below39 5` |
-| `list:patients` | List patients by tag | `tidepool-cli list:patients --clinicId "clinic-id"` |
-| `search` | Search patients | `tidepool-cli search "diabetes"` |
-| `list:clinics` | List available clinics | `tidepool-cli list:clinics` |
-| `list:tags` | List available tags | `tidepool-cli list:tags` |
-| `delete:list` | Delete patients by tag | `tidepool-cli delete:list --tagId "tag-id"` |
-| `suggest` | Get command suggestions | `tidepool-cli suggest` |
+| `cliConfigure` | Set up credentials | `tidepool-cli cliConfigure --userName "user@tidepool.org" --password "password" --baseUrl "https://api.tidepool.org"` |
+| `cliDashboard` | Create test dashboard | `tidepool-cli cliDashboard --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0 --below3=1 --below39=1 --drop=1 --lesstir70=1 --lesscgm70=1 --meetingTargets=1` |
+| `cliDashboardOffset` | Create dashboard with time offset | `tidepool-cli cliDashboardOffset --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0 --below3=1 --below39=1 --drop=1 --lesstir70=1 --lesscgm70=1 --meetingTargets=1 --offset=1440` |
+| `cliListPatients` | List patients by tag | `tidepool-cli cliListPatients` |
+| `cliSearch` | Search patients | `tidepool-cli cliSearch "test" --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0 ` |
+| `cliListClinics` | List available clinics | `tidepool-cli cliListClinics` |
+| `cliListTags` | List available tags | `tidepool-cli cliListTags -g 633b559d1d64ad2c9471178b` |
+| `cliDeleteList` | Delete patients by tag | `tidepool-cli cliDeleteList --clinicId=633b559d1d64ad2c9471178b --tagId=6841e165edfe663ac4d8bff0` |
+| `suggest` | Get command suggestions | `tidepool-cli suggest cliListPatients` |
 
 ## Core API Functions
 
