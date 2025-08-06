@@ -30,7 +30,7 @@ export async function createDashboard(tirCounts: Record<string, number>, periodL
     let counter = 0;
     for (const key in tirCounts) {
         for (let i = 0; i < tirCounts[key]; i++) {
-            let payload = { password: "tidepool", birthDate: '2000-01-01', fullName: `Test User  ${counter}`, tags: [], connectDexcom: false };
+            let payload = { password: "tidepool", birthDate: '2000-01-01', fullName: `${key}  ${counter}`, tags: [], connectDexcom: false };
             let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
             counter++;
             if (patientId) {
@@ -108,7 +108,7 @@ export async function createDashboardOffset(tirCounts: Record<string, number>, p
     let counter = 0;
     for (const key in tirCounts) {
         for (let i = 0; i < tirCounts[key]; i++) {
-            let payload = { password: "tidepool", birthDate: '2000-01-01', fullName: `${patientName}  ${counter}`, tags: [], connectDexcom: false };
+            let payload = { password: "tidepool", birthDate: '2000-01-01', fullName: `${key}  ${counter}`, tags: [], connectDexcom: false };
             let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
             counter++;
             if (patientId) {

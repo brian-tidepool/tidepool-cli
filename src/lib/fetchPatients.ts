@@ -49,6 +49,8 @@ export async function fetchPatientsByClinicAndTag(
     // Step 2: Fetch patients for the clinic and tag
     const params = new URLSearchParams();
     params.append('tags', tagId);
+    params.append('offset', '0');
+    params.append('limit', '50');
     const patientsUrl = `${creds.baseUrl}/v1/clinics/${clinicId}/patients?${params.toString()}`;
     const patientsResponse = await fetch(patientsUrl, {
       method: 'GET',

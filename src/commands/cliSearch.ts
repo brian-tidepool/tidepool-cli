@@ -1,10 +1,10 @@
 // src/commands/hello.ts
 import { Command,Args,Flags } from "@oclif/core";
-import * as Search from "../lib/patientSearch.js";
+
 import { BaseCommand } from '../base-command.js'
 import { Credentials } from '../lib/credentials.js';
 
-
+import { searchPatients, Patient } from "../lib/patientSearch.js"
 
 let periodLength = 14;
 
@@ -44,7 +44,7 @@ export default class UsersSearch  extends BaseCommand<typeof UsersSearch> {
     
             const {args,flags} = await this.parse(UsersSearch);
             // Updated to match new searchPatients signature with all parameters
-            const user = await Search.searchPatients(
+            const user : Patient[] | null= await searchPatients(
                 this.credentials,
                 flags.clinicId,
                 flags.tagId,
@@ -56,6 +56,13 @@ export default class UsersSearch  extends BaseCommand<typeof UsersSearch> {
                 50 // limit
             );
             
-       
+            if (!user || user.length === 0) {
+                this.log('No users found for the current search criteria.');
+                return;
+            }
+            user.forEach((user1, index) => {
+                this.log(`${index + 1}. fullName: ${user1.fullName}, id: ${user1.id}`);
+            });
+
     }
 }

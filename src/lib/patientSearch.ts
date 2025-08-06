@@ -1,6 +1,18 @@
 
 import { Credentials } from "./credentials.js";
 
+
+// Patient type for a single patient
+export interface Patient {
+  id: string;
+  fullName: string;
+}
+
+// API response type for patients
+export interface PatientsResponse {
+  data: Patient[];
+}
+
 /**
  * Searches for patients in a clinic by tag and search string.
  * @param creds User credentials
@@ -24,7 +36,7 @@ export async function searchPatients(
   sortType: string = 'cgm',
   period: string = '1d',
   limit: number = 50
-): Promise<unknown[] | null> {
+): Promise<Patient[] | null> {
   try {
     // Step 1: Login with basic auth
     const loginResponse = await fetch(`${creds.baseUrl}/auth/login`, {

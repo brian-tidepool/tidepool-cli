@@ -22,7 +22,7 @@ export default class UserDelete extends BaseCommand<typeof UserDelete> {
 
     public async run(): Promise<void> {
         try {
-            const user = await Delete.deletePatients(this.credentials, this.flags.tagId, this.flags.clinicId);
+            const user = await Delete.deletePatients(this.credentials, this.flags.clinicId, this.flags.tagId);
             this.log('✅ Delete operation completed successfully');
         } catch (error) {
             this.error(`Failed to delete dashboard: ${error instanceof Error ? error.message : String(error)}`);

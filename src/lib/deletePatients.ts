@@ -26,7 +26,7 @@ export async function deletePatients(
     }
     for (const id of ids) {
       // Optionally, log which ID is being deleted:
-      // console.log(`Deleting patient ID: ${id}`);
+      console.log(`Deleting patient ID: ${id}`);
       await utils.sleep(5000);
       await deletePatient.deletePatient(
         creds,
