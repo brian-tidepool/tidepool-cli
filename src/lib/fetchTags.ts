@@ -2,20 +2,22 @@
 import { Credentials } from './credentials.js';
 
 // Tag type for a single tag
+export interface ClinicPatientTag {
+  
+  clinic: {
+    id: string;
+  name: string;
+    patientTags: PatientTag[];
+  };
+}
+
 export interface PatientTag {
   id: string;
   name: string;
 }
 
-// Clinic with tags
-export interface ClinicWithTags {
-  clinic: {
-    patientTags: PatientTag[];
-  };
-}
-
 // API response type for clinics with tags
-export type ClinicsWithTagsResponse = ClinicWithTags[];
+export type ClinicsWithTagsResponse = ClinicPatientTag[];
 
 /**
  * Fetches clinics and their patient tags for a clinician using Tidepool API.
