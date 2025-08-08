@@ -1,1 +1,2 @@
-export { run } from '@oclif/core';
+export * from './lib/fetchClinics.js';
+export * from './lib/credentials.js';
