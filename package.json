@@ -55,9 +55,11 @@
   "files": [
     "/dist",
     "/bin",
+    "/src",
     "/data",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+     "/tsconfig.json"
   ],
   "dependencies": {
     "@oclif/core": "^4.4.0",
