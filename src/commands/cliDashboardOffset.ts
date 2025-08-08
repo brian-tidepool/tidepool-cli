@@ -3,7 +3,7 @@ import { Command, Args, Flags } from "@oclif/core";
 import * as Dashboard from "../lib/dashboardScenarioSelector.js"
 
 import { BaseCommand } from '../base-command.js'
-
+import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 
 
 
@@ -17,7 +17,7 @@ export default class UserDashboardOffset extends BaseCommand<typeof UserDashboar
     static examples = ['<%= config.bin %> <%= command.id %> --log-level=info --below3=0 --below39=0 --drop=0 --lesstir70=0 --lesscgm70=0 --meetingTargets=1 --clinicId= --tagId= --offset=1440 --patientName=test'    
     ];
 
-    static flags = {
+    static flags: FlagInput = {
         // Integer flag
         below3: Flags.integer({
             char: 'a',
@@ -70,7 +70,7 @@ export default class UserDashboardOffset extends BaseCommand<typeof UserDashboar
             default: 'test'
         })
 
-    } as const
+    } 
 
 
 

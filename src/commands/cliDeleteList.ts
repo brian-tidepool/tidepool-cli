@@ -3,11 +3,12 @@
 import { Flags } from "@oclif/core";
 import * as Delete from "../lib/deletePatients.js";
 import { BaseCommand } from "../base-command.js";
+import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 
 export default class UserDelete extends BaseCommand<typeof UserDelete> {
     static description = 'Delete dashboard by tag id';
 
-    static flags = {
+    static flags: FlagInput = {
         clinicId: Flags.string({
             char: 'g',
             description: 'clinic id',
@@ -18,7 +19,7 @@ export default class UserDelete extends BaseCommand<typeof UserDelete> {
             description: 'tag id',
             required: true
         })
-    } as const;
+    };
 
     public async run(): Promise<void> {
         try {

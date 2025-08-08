@@ -1,7 +1,7 @@
 // src/commands/suggest.ts
 import { Command, Flags, Args, Config } from '@oclif/core'
 import { ParameterHistory } from '../lib/commandHistory.js'
-
+import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 export default class Suggest extends Command {
   static override description = 'Get parameter suggestions based on history'
 
@@ -9,7 +9,7 @@ export default class Suggest extends Command {
     '<%= config.bin %> <%= command.id %> deploy',
   ]
 
-  static override flags : Flags = {
+  static override flags: FlagInput : Flags = {
     limit: Flags.integer({
       char: 'l',
       description: 'limit number of suggestions',

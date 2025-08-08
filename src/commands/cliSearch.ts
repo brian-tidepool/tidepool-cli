@@ -5,14 +5,14 @@ import { BaseCommand } from '../base-command.js'
 import { Credentials } from '../lib/credentials.js';
 
 import { searchPatients, Patient } from "../lib/patientSearch.js"
-
+import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 let periodLength = 14;
 
 
 export default class UsersSearch  extends BaseCommand<typeof UsersSearch> {
     static description = 'Search for a user by clinicId and tagId'
 
-    static flags = {
+    static flags: FlagInput = {
 
         clinicId: Flags.string({
             char: 'g',
@@ -25,7 +25,7 @@ export default class UsersSearch  extends BaseCommand<typeof UsersSearch> {
             default: '6841e165edfe663ac4d8bff0'
         })
 
-    } as const
+    } 
 
     static examples = [
         '<%=config.bin%> <%= command.id %>  "keyword"',
