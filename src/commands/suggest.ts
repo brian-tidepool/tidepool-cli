@@ -9,7 +9,7 @@ export default class Suggest extends Command {
     '<%= config.bin %> <%= command.id %> deploy',
   ]
 
-  static override flags: FlagInput : Flags = {
+  static override flags: FlagInput  = {
     limit: Flags.integer({
       char: 'l',
       description: 'limit number of suggestions',
