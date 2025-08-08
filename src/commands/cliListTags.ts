@@ -27,7 +27,7 @@ export default class TagList extends BaseCommand<typeof TagList> {
         }),
 
 
-    }
+    }as const
 
 
     public async run(): Promise<void> {

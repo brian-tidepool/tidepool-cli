@@ -15,7 +15,7 @@ export default class Suggest extends Command {
       description: 'limit number of suggestions',
       default: 5,
     }),
-  }
+  } as const
 
   static override args = {
     command: Args.string({

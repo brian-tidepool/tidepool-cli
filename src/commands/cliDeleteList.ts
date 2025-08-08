@@ -18,7 +18,7 @@ export default class UserDelete extends BaseCommand<typeof UserDelete> {
             description: 'tag id',
             required: true
         })
-    };
+    } as const;
 
     public async run(): Promise<void> {
         try {

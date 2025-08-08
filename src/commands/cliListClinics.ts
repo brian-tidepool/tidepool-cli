@@ -18,7 +18,7 @@ export default class ClinicList extends BaseCommand<typeof ClinicList> {
     static description = 'List clinics by id and name'
 
   
-    static flags = {};
+    static flags = {}as const;
 
 
     public async run(): Promise<void> {

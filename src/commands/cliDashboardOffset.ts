@@ -70,7 +70,7 @@ export default class UserDashboardOffset extends BaseCommand<typeof UserDashboar
             default: 'test'
         })
 
-    }
+    } as const
 
 
 

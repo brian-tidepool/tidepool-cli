@@ -25,7 +25,7 @@ export default class UsersSearch  extends BaseCommand<typeof UsersSearch> {
             default: '6841e165edfe663ac4d8bff0'
         })
 
-    }
+    } as const
 
     static examples = [
         '<%=config.bin%> <%= command.id %>  "keyword"',
