@@ -4,6 +4,19 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./lib/*": {
+      "import": "./dist/lib/*.js",
+      "types": "./dist/lib/*.d.ts"
+    },
+    "./data/*": {
+      "import": "./data/*"
+    }
+  },
   "bin": {
     "tidepool-cli": "./bin/run.js"
   },
@@ -42,6 +55,7 @@
   "files": [
     "/dist",
     "/bin",
+    "/data",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
