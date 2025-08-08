@@ -60,7 +60,7 @@ export default class UserDashboard extends BaseCommand<typeof UserDashboard> {
             default: '6841e165edfe663ac4d8bff0'
         })
 
-    } as const
+    } 
 
     
 

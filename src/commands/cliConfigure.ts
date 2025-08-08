@@ -36,7 +36,7 @@ export default class Configure extends Command {
       description: 'Reset stored credentials',
       char: 'r'
     })
-  } as const;
+  };
 
   private credentialsManager = new CredentialsManager();
 
