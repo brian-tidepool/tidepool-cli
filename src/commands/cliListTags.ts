@@ -4,7 +4,7 @@ import { fetchClinicsWithTags, ClinicsWithTagsResponse, ClinicPatientTag } from 
 import { BaseCommand } from '../base-command.js'
 
 
-
+import type { Flag, FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 
 
 
@@ -18,7 +18,7 @@ export default class TagList extends BaseCommand<typeof TagList> {
     static description = 'List clinics by id and name'
 
 
-    static flags = {
+    static flags : FlagInput= {
 
         clinicId: Flags.string({
             char: 'g',

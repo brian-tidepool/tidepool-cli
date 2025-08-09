@@ -2,7 +2,7 @@
 import { Command, Args, Flags } from "@oclif/core";
 import { fetchPatientsByClinicAndTag, Patient } from "../lib/fetchPatients.js"
 import { BaseCommand } from '../base-command.js'
-
+import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 
 
 
@@ -30,7 +30,7 @@ export default class UserList extends BaseCommand<typeof UserList> {
             default: '6841e165edfe663ac4d8bff0'
         })
 
-    }
+    } 
 
 
 
