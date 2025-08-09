@@ -47,7 +47,7 @@ export async function createDashboard(tirCounts: Record<string, number>, periodL
     const start2 = new Date(end.getTime() -1440*periodLength*60000);
     const end2 = new Date(end.getTime());
     const start1 = new Date(end.getTime()-1440*2*periodLength*60000);
-    const end1 = new Date(end.getTime()-1440*7*60000);
+    const end1 = new Date(end.getTime()-1440*periodLength*60000);
     
     for (const key in tirCounts) {
         for (let i = 0; i < tirCounts[key]; i++) {
@@ -125,7 +125,7 @@ export async function createDashboardOffset(tirCounts: Record<string, number>, p
     const start2 = new Date(end.getTime() -1440*periodLength*60000);
     const end2 = new Date(end.getTime());
     const start1 = new Date(end.getTime()-1440*2*periodLength*60000);
-    const end1 = new Date(end.getTime()-1440*7*60000);
+    const end1 = new Date(end.getTime()-1440*periodLength*60000);
     
     for (const key in tirCounts) {
         for (let i = 0; i < tirCounts[key]; i++) {
