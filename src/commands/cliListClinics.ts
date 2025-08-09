@@ -2,7 +2,7 @@
 import { Command, Args, Flags } from "@oclif/core";
 import { fetchClinicsByCredentials, ClinicData} from "../lib/fetchClinics.js"
 import { BaseCommand } from '../base-command.js'
-
+import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 
 
 
@@ -18,7 +18,7 @@ export default class ClinicList extends BaseCommand<typeof ClinicList> {
     static description = 'List clinics by id and name'
 
   
-    static flags = {};
+    static flags: FlagInput = {};
 
 
     public async run(): Promise<void> {

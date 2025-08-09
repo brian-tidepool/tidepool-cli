@@ -1,6 +1,6 @@
 import { Command, Flags } from '@oclif/core';
 import { CredentialsManager, Credentials } from '../lib/credentials.js';
-
+import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 export default class Configure extends Command {
   static description = 'Configure credentials for the Tidepool CLI';
 
@@ -11,7 +11,7 @@ export default class Configure extends Command {
     '<%= config.bin %> <%= command.id %> --reset',
   ];
 
-  static flags = {
+  static flags: FlagInput = {
     help: Flags.help({ char: 'h' }),
     userName: Flags.string({ 
       description: 'Username/email for authentication',
