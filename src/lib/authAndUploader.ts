@@ -132,3 +132,99 @@ export async function authenticateAndUploadData(
     return null;
   }
 }
+
+
+
+
+
+export async function authenticateAndUploadDataDSA(
+  creds: Credentials,
+  postData: UploadPostDataPayload,
+  dataSet: UploadDataSet,
+): Promise<number | null> {
+  try {
+    // Step 1: Login with basic auth
+    const loginResponse = await fetch(`${creds.baseUrl}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${btoa(`${creds.userName}:${creds.password}`)}`
+      },
+    });
+
+    if (!loginResponse.ok) {
+      throw new Error(`Login failed: ${loginResponse.status} ${loginResponse.statusText}`);
+    }
+
+    const loginData = await loginResponse.json();
+    const userId: string = loginData.userid;
+
+    const token = loginResponse.headers.get('X-Tidepool-Session-Token');
+    if (!token) {
+      throw new Error('Missing authentication token after login.');
+    }
+
+    // Step 2: Prepare dataset and upload session
+    const myuuid = uuidv4().replaceAll('-', '');
+    if (dataSet?.client?.private) {
+      dataSet.client.private.blobId = myuuid;
+    }
+    const date = new Date();
+    dataSet.computerTime = toLocalISOString(date);
+    dataSet.time = date.toISOString();
+    if (dataSet.deviceTime !== undefined) {
+      dataSet.deviceTime = dataSet.computerTime;
+    }
+
+    const openSessionResponse = await fetch(`${creds.baseUrl}/v1/users/${userId}/datasets`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'X-Tidepool-Session-Token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataSet),
+    });
+    const openSessionBody = await openSessionResponse.json();
+    const uploadSessionId = openSessionBody.data.id;
+
+    // Step 3: Upload data
+    const uploadResponse = await fetch(`${creds.baseUrl}/dataservices/v1/datasets/${uploadSessionId}/data`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'X-Tidepool-Session-Token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error(`Data upload failed: ${uploadResponse.status} ${uploadResponse.statusText}`);
+    }
+
+    // Step 4: Close the upload session
+    const closeSessionResponse = await fetch(`${creds.baseUrl}/dataservices/v1/datasets/${uploadSessionId}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'X-Tidepool-Session-Token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ dataState: 'closed' }),
+    });
+
+    if (!closeSessionResponse.ok) {
+      throw new Error(`Failed to close upload session: ${closeSessionResponse.status} ${closeSessionResponse.statusText}`);
+    }
+
+    return uploadResponse.status;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error in authenticateAndUploadData:', error.message);
+    } else {
+      console.error('Unknown error in authenticateAndUploadData:', error);
+    }
+    return null;
+  }
+}

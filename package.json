@@ -1,6 +1,6 @@
 {
   "name": "tidepool-cli",
-  "version": "1.0.38",
+  "version": "1.0.40",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -59,7 +59,7 @@
     "/data",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
-     "/tsconfig.json"
+    "/tsconfig.json"
   ],
   "dependencies": {
     "@oclif/core": "^4.4.0",

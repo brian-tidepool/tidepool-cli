@@ -144,3 +144,25 @@ export async function createDashboardOffset(tirCounts: Record<string, number>, p
 
 
 }
+
+
+
+export async function createDSAData(key: string, periodLength: number, offsetTimeMinutes: number,creds: Credentials) {
+    
+    const end = new Date(Date.now() - offsetTimeMinutes *60000);
+    const start2 = new Date(end.getTime() -1440*periodLength*60000);
+    const end2 = new Date(end.getTime());
+    const start1 = new Date(end.getTime()-1440*2*periodLength*60000);
+    const end1 = new Date(end.getTime()-1440*periodLength*60000);
+    
+    
+
+           
+    await uploadToCustodial.uploadToDSA(start1, end1, tirLookup[key][0].slice(0, 2), tirLookup[key][0][2], tirLookup[key][0][3], creds);
+    await uploadToCustodial.uploadToDSA(start2, end2, tirLookup[key][1].slice(0, 2), tirLookup[key][1][2], tirLookup[key][1][3], creds);
+            
+        
+
+
+
+}
