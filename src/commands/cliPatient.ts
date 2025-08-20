@@ -41,7 +41,7 @@ export default class PatientUpload extends BaseCommand<typeof PatientUpload> {
         }),
         lesscgm70: Flags.boolean({
             char: 'e',
-            description: 'CGM Wear Time <70%',
+            description: 'CGM Wear Time < 70%',
             default: false
         }),
         meetingTargets: Flags.boolean({
@@ -74,7 +74,7 @@ export default class PatientUpload extends BaseCommand<typeof PatientUpload> {
                 "Time below 3.9 mmol/L > 4%": flags.below39,
                 "Drop in Time in Range > 15%": flags.drop,
                 "Time in Range < 70%": flags.lesstir70,
-                "CGM Wear Time <70%": flags.lesscgm70,
+                "CGM Wear Time < 70%": flags.lesscgm70,
                 "Meeting Targets": flags.meetingTargets
             };
             for (const key in tirCounts) {
