@@ -19,6 +19,14 @@ const tirLookup: Record<string, number[][]> = {
     "Meeting Targets": [[3.8, 3.9, 75, 1], [3.8, 3.9, 75, 1]]
 };
 
+const smbgLookup: Record<string, number[][]> = {
+    "1 reading per day, average 2.9 mmol/l": [[2.9, 1], [2.9, 1]],
+    "5 reading per day, average 3.8 mmol/l ": [[3.8, 5], [3.8, 5]],
+    "10 readings per day, average 3.9 mmol/l": [[3.9, 10], [3.9,10]],
+    "15 readings per day, average 10.1 mmol/l": [[10.1, 15], [10.1,15]],
+    "100 readings per day, average 14.0 mmol/l": [[14.0, 100], [14.0,100]],
+    "200 readings per day, average 19.5 mmol/l": [[19.5,200], [19.5,200]]
+};
 
 
 
@@ -162,6 +170,49 @@ export async function createDSAData(key: string, periodLength: number, offsetTim
     await uploadToCustodial.uploadToDSA(start2, end2, tirLookup[key][1].slice(0, 2), tirLookup[key][1][2], tirLookup[key][1][3], creds);
             
         
+
+
+
+}
+
+export async function createSMBGDashboardOffset(smbgCounts: Record<string, number>, periodLength: number, offsetTimeMinutes: number, patientName:string, clinicId:string, tagId:string, creds: Credentials) {
+    let patientIds = []
+    console.log('Creating patients')
+    let counter = 0;
+    for (const key in smbgCounts) {
+        for (let i = 0; i < smbgCounts[key]; i++) {
+            let payload = { password: "tidepool", birthDate: '2000-01-01', fullName: `${key}  ${counter}`, tags: [], connectDexcom: false };
+            let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
+            counter++;
+            if (patientId) {
+                patientIds.push(patientId);
+            }
+        }
+    }
+
+
+    let tagResult = addTag.addTag(creds, clinicId, patientIds, tagId);
+    await utils.sleep(20000);
+    let patientCounter = 0;
+    const end = new Date(Date.now() - offsetTimeMinutes *60000);
+    const start2 = new Date(end.getTime() -1440*periodLength*60000);
+    const end2 = new Date(end.getTime());
+    const start1 = new Date(end.getTime()-1440*2*periodLength*60000);
+    const end1 = new Date(end.getTime()-1440*periodLength*60000);
+
+    for (const key in smbgCounts) {
+        for (let i = 0; i < smbgCounts[key]; i++) {
+
+            console.log('patientId', patientIds[patientCounter]);
+            console.log(end)
+            console.log(end2)
+            await uploadToCustodial.uploadSMBGToCustodial(start1, end1, clinicId, smbgLookup[key][0][0], smbgLookup[key][0][1], patientIds[patientCounter], creds);
+            await uploadToCustodial.uploadSMBGToCustodial(start2, end2, clinicId, smbgLookup[key][1][0], smbgLookup[key][1][1], patientIds[patientCounter], creds);
+            patientCounter++;
+        }
+
+
+    }
 
 
 

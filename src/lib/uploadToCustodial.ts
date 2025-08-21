@@ -1,4 +1,5 @@
 import * as cbgPayload from "./cbgPayload.js";
+import * as smbgPayload from "./smbgPayload.js";
 import { authenticateAndUploadData,authenticateAndUploadDataDSA, UploadDataSet, UploadPostDataPayload } from "./authAndUploader.js";
 import * as utils from "./Utils.js";
 import * as jsonTimeShifter from "./jsonTimeShifter.js";
@@ -31,6 +32,42 @@ export async function uploadToCustodial(
     const result = await authenticateAndUploadData(
         credentials,
         cbgPayloadValues as UploadPostDataPayload,
+        dataSet as UploadDataSet,
+        userIdParam
+    );
+
+    if (result) {
+        console.log('Successfully created post with ID:', result);
+        // The result variable now contains the response data
+    } else {
+        console.log('Failed to create post');
+    }
+}
+
+
+
+export async function uploadSMBGToCustodial(
+    start: Date, 
+    end: Date, 
+    clinicIdParam: string, 
+    smbgAverage: number, 
+    smbgReadingsPerDay: number, 
+    userIdParam: string,
+    credentials: Credentials
+) {
+    const increment = 5; // 5 minute intervals
+    const fullSmbgValues = smbgPayload.generateExactAverageBounded(smbgReadingsPerDay, smbgAverage);
+
+    const smbgPayloadValues = await smbgPayload.smbgPayload(start, end, increment, fullSmbgValues);
+    const { default: dataSet } = await import('../data/dataset.json', { with: { type: 'json' } });
+
+    interface POSTResponse {
+
+    }
+
+    const result = await authenticateAndUploadData(
+        credentials,
+        smbgPayloadValues as UploadPostDataPayload,
         dataSet as UploadDataSet,
         userIdParam
     );
