@@ -14,9 +14,18 @@ const tirLookup: Record<string, number[][]> = {
     "Time below 3.0 mmol/L > 1%": [[2.9, 3, 69, 5], [2.9, 3, 69, 5]],
     "Time below 3.9 mmol/L > 4%": [[3.8, 3.9, 70, 5], [3.8, 3.9, 70, 5]],
     "Drop in Time in Range > 15%": [[10.1, 3.9, 80, 1], [10.1, 3.9, 80, 25]],
+    "Rise in Time in Range > 15%": [[10.1, 3.9, 80, 25], [10.1, 3.9, 80, 1]],
     "Time in Range < 70%": [[10.0, 10.1, 80, 5], [10.0, 10.1, 80, 5]],
     "CGM Wear Time < 70%": [[3.8, 3.9, 69, 1], [3.8, 3.9, 69, 1]],
-    "Meeting Targets": [[3.8, 3.9, 75, 1], [3.8, 3.9, 75, 1]]
+    "Meeting Targets": [[3.8, 3.9, 75, 1], [3.8, 3.9, 75, 1]],
+    "Drop in Time in Very Low > 15%": [[10.1, 2.9, 80, 1], [10.1, 2.9, 80, 25]],
+    "Rise in Time in Very Low > 15%": [[10.1, 2.9, 80, 25], [10.1, 2.9, 80, 1]],
+    "Drop in Time in Low > 15%": [[10.1, 3.8, 80, 1], [10.1, 3.8, 80, 25]],
+    "Rise in Time in Low > 15%": [[10.1, 3.8, 80, 25], [10.1, 3.8, 80, 1]],
+     "Drop in Time in High > 15%": [[2.9, 10.1, 80, 1], [2.9, 10.1, 80, 25]],
+    "Rise in Time in High > 15%": [[2.9, 10.1, 80, 25], [2.9, 10.1, 80, 1]],
+    "Drop in Time in Very High > 15%": [[10.1, 14.0, 80, 1], [10.1, 14.0, 80, 25]],
+    "Rise in Time in Very High > 15%": [[10.1, 14.0, 80, 25], [10.1, 14.0, 80, 1]]
 };
 
 const smbgLookup: Record<string, number[][]> = {

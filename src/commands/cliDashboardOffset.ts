@@ -7,7 +7,6 @@ import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 
 
 
-let periodLength = 14;
 
 
 
@@ -68,7 +67,57 @@ export default class UserDashboardOffset extends BaseCommand<typeof UserDashboar
             char: 'j',
             description: 'offset',
             default: 'test'
-        })
+        }),
+        rise: Flags.integer({
+            char: 'k',
+            description: 'Rise in Time in Range > 15%',
+            default: 0
+        }),
+        risel: Flags.integer({
+            char: 'l',
+            description: 'Rise in Low > 15%',
+            default: 0
+        }),
+        dropl: Flags.integer({
+            char: 'm',
+            description: 'Drop in Low > 15%',
+            default: 0
+        }),
+        dropvl: Flags.integer({
+            char: 'm',
+            description: 'Drop in Very Low > 15%',
+            default: 0
+        }),
+        risevl: Flags.integer({
+            char: 'n',
+            description: 'Rise in Very Low > 15%',
+            default: 0
+        }),
+        dropvh: Flags.integer({
+            char: 'o',
+            description: 'Drop in Very High > 15%',
+            default: 0
+        }),
+        risevh: Flags.integer({
+            char: 'p',
+            description: 'Rise in Very High > 15%',
+            default: 0
+        }),
+        droph: Flags.integer({
+            char: 'q',
+            description: 'Drop in High > 15%',
+            default: 0
+        }),
+        riseh: Flags.integer({
+            char: 'r',
+            description: 'Rise in High > 15%',
+            default: 0
+        }),
+        periodLength: Flags.integer({
+            char: 's',
+            description: 'period length',
+            default: 14
+        }),
 
     } 
 
@@ -85,10 +134,19 @@ export default class UserDashboardOffset extends BaseCommand<typeof UserDashboar
                 "Drop in Time in Range > 15%": flags.drop,
                 "Time in Range < 70%": flags.lesstir70,
                 "CGM Wear Time <70%": flags.lesscgm70,
-                "Meeting Targets": flags.meetingTargets
+                "Meeting Targets": flags.meetingTargets,
+                "Rise in Time in Range > 15%": flags.rise,
+                "Rise in Time in Low > 15%": flags.risel,
+                "Drop in Time in Low > 15%": flags.dropl,
+                 "Rise in Time in Very Low > 15%": flags.risevl,
+                "Drop in Time in Very Low > 15%": flags.dropvl,
+                "Rise in Time in High > 15%": flags.riseh,
+                "Drop in Time in High > 15%": flags.droph,
+                 "Rise in Time in Very High > 15%": flags.risevh,
+                "Drop in Time in Very High > 15%": flags.dropvh
             };
             
-            const user = await Dashboard.createDashboardOffset(tirCounts, periodLength, flags.offset, flags.patientName, flags.clinicId, flags.tagId,this.credentials)
+            const user = await Dashboard.createDashboardOffset(tirCounts, flags.periodLength, flags.offset, flags.patientName, flags.clinicId, flags.tagId,this.credentials)
 
         
 
