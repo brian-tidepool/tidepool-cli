@@ -11,7 +11,7 @@ import type { FlagInput } from '@oclif/core/lib/interfaces/parser.js'
 
 
 
-export default class UserDashboardOffset extends BaseCommand<typeof UserDashboardOffset> {
+export default class UserDashboardCGMUse extends BaseCommand<typeof UserDashboardCGMUse> {
     static description = 'Create offset dashboard where category flags (ex: meetingTargets) equals the number of users for that category created. Example contains empty required flags for clinicId and tagId';
     static examples = ['<%= config.bin %> <%= command.id %> --log-level=info --below3=0 --below39=0 --drop=0 --lesstir70=0 --lesscgm70=0 --meetingTargets=1 --clinicId= --tagId= --offset=1440 --patientName=test'    
     ];
@@ -123,13 +123,23 @@ export default class UserDashboardOffset extends BaseCommand<typeof UserDashboar
             description: 'less 60',
             default: 0
         }),
+        cgmUse: Flags.integer({
+            char: 'v',
+            description: 'CGM Percent use, between 0 to 100',
+            default: 100
+        }),
+         multiplier: Flags.integer({
+            char: 'w',
+            description: 'CGM Percent use, between 0 to 100',
+            default: 1
+        }),
 
     } 
 
 
 
     public async run(): Promise<void> {
-        const { flags } = await this.parse(UserDashboardOffset);
+        const { flags } = await this.parse(UserDashboardCGMUse);
         this.recordHistory();
        
 
@@ -152,7 +162,7 @@ export default class UserDashboardOffset extends BaseCommand<typeof UserDashboar
                 "CGM Wear Time < 60%": flags.lesscgm60
             };
             
-            const user = await Dashboard.createDashboardOffset(tirCounts, flags.periodLength, flags.offset, flags.patientName, flags.clinicId, flags.tagId,this.credentials)
+            const user = await Dashboard.createCGMUseDashboardOffset(flags.multiplier,flags.cgmUse,tirCounts, flags.periodLength, flags.offset, flags.patientName, flags.clinicId, flags.tagId,this.credentials)
 
         
 

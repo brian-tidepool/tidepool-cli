@@ -58,6 +58,56 @@ export async function uploadToCustodial(
   }
 }
 
+
+export async function uploadToRepeatCustodial(
+  multiplier: number,
+  start: Date,
+  end: Date,
+  clinicIdParam: string,
+  cbgValues: number[],
+  cgmUse: number,
+  tirPercent: number,
+  userIdParam: string,
+  credentials: Credentials
+) {
+  const increment = 5; // 5 minute intervals
+  const usage = utils.calculatePercentageRoundDown(cgmUse);
+  const percentages = utils.calculatePercentageRoundUp(
+    tirPercent,
+    usage.roundedDown
+  );
+  const cbgCounts = [percentages.roundedUp, percentages.remainder];
+  const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
+
+  const cbgPayloadValues = await cbgPayload.cbgPayload(
+    start,
+    end,
+    increment,
+    fullCbgValues
+  );
+  const temp = cbgPayloadValues[0];
+  const cbgRepeat = repeatArray(cbgPayloadValues,multiplier)
+  const { default: dataSet } = await import("../data/dataset.json", {
+    with: { type: "json" },
+  });
+
+  interface POSTResponse {}
+
+  const result = await authenticateAndUploadData(
+    credentials,
+    cbgRepeat as UploadPostDataPayload,
+    dataSet as UploadDataSet,
+    userIdParam
+  );
+
+  if (result) {
+    console.log("Successfully created post with ID:", result);
+    // The result variable now contains the response data
+  } else {
+    console.log("Failed to create post");
+  }
+}
+
 export async function uploadSMBGToCustodial(
   start: Date,
   end: Date,
@@ -255,4 +305,8 @@ export async function uploadMedtronicToCustodial(
   } else {
     console.log("Failed to create post");
   }
+}
+
+function repeatArray<T>(arr: T[], n: number): T[] {
+  return Array.from({ length: n }, () => arr).flat();
 }
