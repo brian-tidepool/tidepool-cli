@@ -1,9 +1,5 @@
 import * as cbgPayload from "./cbgPayload.js";
-import {
-  authenticateAndUploadData,
-  UploadDataSet,
-  UploadPostDataPayload,
-} from "./authAndUploader.js";
+import { authenticateAndUploadData, UploadDataSet, UploadPostDataPayload } from "./authAndUploader.js";
 import * as utils from "./Utils.js";
 import * as addTag from "./addTag.js";
 import * as uploadToCustodial from "./uploadToCustodial.js";
@@ -133,6 +129,17 @@ const smbgLowAndHighLookup: Record<string, number[][]> = {
   ],
 };
 
+const tirLookup2: Record<string, number[][]> = {
+  Low: [
+    [2.9, 2.9, 100, 100],
+    [2.9, 2.9, 100, 100],
+  ],
+  High: [
+    [10.1, 10.1, 100, 100],
+    [10.1, 10.1, 100, 100],
+  ],
+};
+
 export async function createDashboard(
   tirCounts: Record<string, number>,
   periodLength: number,
@@ -152,11 +159,7 @@ export async function createDashboard(
         tags: [],
         connectDexcom: false,
       };
-      let patientId = await createPatient.createPatient<typeof payload>(
-        creds,
-        clinicId,
-        payload
-      );
+      let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
       counter++;
       if (patientId) {
         patientIds.push(patientId);
@@ -202,12 +205,7 @@ export async function createDashboard(
   }
 }
 
-export async function createMedtronicDashboard(
-  tirCounts: number,
-  clinicId: string,
-  tagId: string,
-  creds: Credentials
-) {
+export async function createMedtronicDashboard(tirCounts: number, clinicId: string, tagId: string, creds: Credentials) {
   let patientIds = [];
   console.log("Creating patients");
   let counter = 0;
@@ -219,11 +217,7 @@ export async function createMedtronicDashboard(
       tags: [],
       connectDexcom: false,
     };
-    let patientId = await createPatient.createPatient<typeof payload>(
-      creds,
-      clinicId,
-      payload
-    );
+    let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
     counter++;
     if (patientId) {
       patientIds.push(patientId);
@@ -235,11 +229,7 @@ export async function createMedtronicDashboard(
   for (let i = 0; i < tirCounts; i++) {
     console.log("patientId", patientIds[i]);
 
-    await uploadToCustodial.uploadMedtronicToCustodial(
-      clinicId,
-      patientIds[i],
-      creds
-    );
+    await uploadToCustodial.uploadMedtronicToCustodial(clinicId, patientIds[i], creds);
   }
 }
 
@@ -264,11 +254,7 @@ export async function createDashboardOffset(
         tags: [],
         connectDexcom: false,
       };
-      let patientId = await createPatient.createPatient<typeof payload>(
-        creds,
-        clinicId,
-        payload
-      );
+      let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
       counter++;
       if (patientId) {
         patientIds.push(patientId);
@@ -338,11 +324,7 @@ export async function createCGMUseDashboardOffset(
         tags: [],
         connectDexcom: false,
       };
-      let patientId = await createPatient.createPatient<typeof payload>(
-        creds,
-        clinicId,
-        payload
-      );
+      let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
       counter++;
       if (patientId) {
         patientIds.push(patientId);
@@ -392,12 +374,7 @@ export async function createCGMUseDashboardOffset(
   }
 }
 
-export async function createDSAData(
-  key: string,
-  periodLength: number,
-  offsetTimeMinutes: number,
-  creds: Credentials
-) {
+export async function createDSAData(key: string, periodLength: number, offsetTimeMinutes: number, creds: Credentials) {
   const end = new Date(Date.now() - offsetTimeMinutes * 60000);
   const start2 = new Date(end.getTime() - 1440 * periodLength * 60000);
   const end2 = new Date(end.getTime());
@@ -443,11 +420,7 @@ export async function createSMBGDashboardOffset(
         tags: [],
         connectDexcom: false,
       };
-      let patientId = await createPatient.createPatient<typeof payload>(
-        creds,
-        clinicId,
-        payload
-      );
+      let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
       counter++;
       if (patientId) {
         patientIds.push(patientId);
@@ -513,11 +486,7 @@ export async function createLowAndHighSMBGDashboardOffset(
         tags: [],
         connectDexcom: false,
       };
-      let patientId = await createPatient.createPatient<typeof payload>(
-        creds,
-        clinicId,
-        payload
-      );
+      let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
       counter++;
       if (patientId) {
         patientIds.push(patientId);
@@ -560,4 +529,249 @@ export async function createLowAndHighSMBGDashboardOffset(
       patientCounter++;
     }
   }
+}
+
+export async function createSourceDashboard(clinicId: string, creds: Credentials) {
+  let patientIds = [];
+  console.log("Creating source patients");
+  let counter = 0;
+  let payloads = [
+    {
+      password: "tidepool",
+      birthDate: "2024-04-05",
+      fullName: "real duplicate source",
+      mrn: "REALDUPLICATESOURCETAG1",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "duplicate 1",
+      mrn: "DUPLICATE1ASOURCE",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "duplicate 1",
+      mrn: "DUPLICATE1BSOURCE",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2002-01-01",
+      fullName: "duplicate mrn only source",
+      mrn: "DUPLICATENAMEONLYTAG1TAG2",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "source 1",
+      mrn: "SOURCE1",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "source 2",
+      mrn: "SOURCE2",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "source 3",
+      mrn: "SOURCE3",
+      tags: [],
+      connectDexcom: false,
+    },
+  ];
+
+  for (let i = 0; i < payloads.length; i++) {
+    let payload = payloads[i];
+    let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
+    counter++;
+    if (patientId) {
+      patientIds.push(patientId);
+    }
+  }
+  await utils.sleep(20000);
+
+  await uploadToCustodial.uploadMedtronicToCustodial(clinicId, patientIds[0], creds);
+}
+
+export async function createTargetDashboard(clinicId: string, creds: Credentials) {
+  let patientIds = [];
+  console.log("Creating target patients");
+  let counter = 0;
+  let payloads = [
+    {
+      password: "tidepool",
+      birthDate: "2024-04-05",
+      fullName: "real duplicate target",
+      mrn: "REALDUPLICATESOURCETAG3",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "duplicate 2",
+      mrn: "DUPLICATE2",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "duplicate 2",
+      mrn: "DUPLICATE1",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2001-01-01",
+      fullName: "duplicate mrn only target",
+      mrn: "MRNONLY",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "target 1",
+      mrn: "TARGET1TAG1",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "target 2",
+      mrn: "TARGET2TAG3",
+      tags: [],
+      connectDexcom: false,
+    },
+    {
+      password: "tidepool",
+      birthDate: "2000-01-01",
+      fullName: "target 3",
+      mrn: "TARGET3",
+      tags: [],
+      connectDexcom: false,
+    },
+  ];
+
+  for (let i = 0; i < payloads.length; i++) {
+    let payload = payloads[i];
+    let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
+    counter++;
+    if (patientId) {
+      patientIds.push(patientId);
+    }
+  }
+  await utils.sleep(20000);
+
+  await uploadToCustodial.uploadMedtronicToCustodial(clinicId, patientIds[0], creds);
+}
+
+export async function createDeviceIdDashboardOffset(
+  periodLength: number,
+  offsetTimeMinutes: number,
+  patientName: string,
+  clinicId: string,
+  tagId: string,
+  creds: Credentials
+) {
+  let patientIds = [];
+  console.log("Creating patients");
+  let counter = 0;
+
+  let payload = {
+    password: "tidepool",
+    birthDate: "2000-01-01",
+    fullName: patientName,
+    tags: [],
+    connectDexcom: false,
+  };
+  let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
+  counter++;
+  if (patientId) {
+    patientIds.push(patientId);
+  }
+
+  let tagResult = addTag.addTag(creds, clinicId, patientIds, tagId);
+  await utils.sleep(20000);
+  let patientCounter = 0;
+  const end = new Date(Date.now() - offsetTimeMinutes * 60000);
+  const start2 = new Date(end.getTime() - 1440 * periodLength * 60000);
+  const end2 = new Date(end.getTime());
+  const start1 = new Date(end.getTime() - 1440 * 2 * periodLength * 60000);
+  const end1 = new Date(end.getTime() - 1440 * periodLength * 60000);
+
+  const end_ = new Date(Date.now() - (offsetTimeMinutes - 1) * 60000);
+  const start2_ = new Date(end_.getTime() - 1440 * periodLength * 60000);
+  const end2_ = new Date(end_.getTime());
+  const start1_ = new Date(end_.getTime() - 1440 * 2 * periodLength * 60000);
+  const end1_ = new Date(end_.getTime() - 1440 * periodLength * 60000);
+
+  console.log("patientId", patientIds[patientCounter]);
+
+  console.log("end of upload", end2);
+  await uploadToCustodial.uploadToDeviceIdCustodial(
+    1,
+    start1,
+    end1,
+    clinicId,
+    tirLookup2["Low"][0].slice(0, 2),
+    tirLookup2["Low"][0][2],
+    tirLookup2["Low"][0][3],
+    patientIds[patientCounter],
+    creds
+  );
+  await uploadToCustodial.uploadToDeviceIdCustodial(
+    1,
+    start2,
+    end2,
+    clinicId,
+    tirLookup2["Low"][1].slice(0, 2),
+    tirLookup2["Low"][0][2],
+    tirLookup2["Low"][1][3],
+    patientIds[patientCounter],
+    creds
+  );
+
+  console.log("patientId", patientIds[patientCounter]);
+
+  console.log("end of upload", end2);
+  await uploadToCustodial.uploadToDeviceIdCustodial(
+    2,
+    start1_,
+    end1_,
+    clinicId,
+    tirLookup2["High"][0].slice(0, 2),
+    tirLookup2["High"][0][2],
+    tirLookup2["High"][0][3],
+    patientIds[patientCounter],
+    creds
+  );
+  await uploadToCustodial.uploadToDeviceIdCustodial(
+    2,
+    start2_,
+    end2_,
+    clinicId,
+    tirLookup2["High"][1].slice(0, 2),
+    tirLookup2["High"][0][2],
+    tirLookup2["High"][1][3],
+    patientIds[patientCounter],
+    creds
+  );
 }

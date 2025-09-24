@@ -1,10 +1,5 @@
-import * as utils from './Utils.js';
-import * as dateGenerator from './dateGenerator.js';
-
-
-
-
-
+import * as utils from "./Utils.js";
+import * as dateGenerator from "./dateGenerator.js";
 
 /**
  * Interface representing a single CBG (Continuous Glucose Monitoring) data point.
@@ -30,15 +25,16 @@ export async function cbgPayload(
   startDate: Date,
   endDate: Date,
   incrementMinutes: number,
-  cbgValues: number[]
+  cbgValues: number[],
+  deviceId?: number
 ): Promise<CbgDataPoint[]> {
   const dateArray = dateGenerator.generateDateArray2D(startDate, endDate, incrementMinutes);
-  const dateArrayString = dateArray.map(row => row.map(value => value.toISOString()));
-  const stringArray1D = cbgValues.map(value => value.toString());
+  const dateArrayString = dateArray.map((row) => row.map((value) => value.toISOString()));
+  const stringArray1D = cbgValues.map((value) => value.toString());
   const result = utils.resizeAndAdd3D(dateArrayString, stringArray1D);
 
   // Dynamically import the CBG template JSON
-  const { default: jsonData } = await import('../data/cbg.json', { with: { type: 'json' } });
+  const { default: jsonData } = await import("../data/cbg.json", { with: { type: "json" } });
   const payload: CbgDataPoint[] = [];
 
   result.forEach((day: string[][]) => {
@@ -46,6 +42,7 @@ export async function cbgPayload(
       const dataPoint: CbgDataPoint = { ...structuredClone(jsonData) };
       dataPoint.time = date[0];
       dataPoint.value = Number(date[1]);
+      dataPoint.deviceId = dataPoint.deviceId + (deviceId?.toString() ?? "");
       payload.push(dataPoint);
     });
   });
@@ -60,9 +57,5 @@ export async function cbgPayload(
  * @returns A new array with items duplicated as specified
  */
 export function duplicateEntries<T>(sourceArray: T[], countsArray: number[]): T[] {
-  return sourceArray.flatMap((item, index) =>
-    Array(countsArray[index] || 0).fill(item)
-  );
+  return sourceArray.flatMap((item, index) => Array(countsArray[index] || 0).fill(item));
 }
-
-

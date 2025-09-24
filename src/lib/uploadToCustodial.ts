@@ -23,19 +23,11 @@ export async function uploadToCustodial(
 ) {
   const increment = 5; // 5 minute intervals
   const usage = utils.calculatePercentageRoundDown(cgmUse);
-  const percentages = utils.calculatePercentageRoundUp(
-    tirPercent,
-    usage.roundedDown
-  );
+  const percentages = utils.calculatePercentageRoundUp(tirPercent, usage.roundedDown);
   const cbgCounts = [percentages.roundedUp, percentages.remainder];
   const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
 
-  const cbgPayloadValues = await cbgPayload.cbgPayload(
-    start,
-    end,
-    increment,
-    fullCbgValues
-  );
+  const cbgPayloadValues = await cbgPayload.cbgPayload(start, end, increment, fullCbgValues);
   const temp = cbgPayloadValues[0];
   const { default: dataSet } = await import("../data/dataset.json", {
     with: { type: "json" },
@@ -58,7 +50,6 @@ export async function uploadToCustodial(
   }
 }
 
-
 export async function uploadToRepeatCustodial(
   multiplier: number,
   start: Date,
@@ -72,21 +63,13 @@ export async function uploadToRepeatCustodial(
 ) {
   const increment = 5; // 5 minute intervals
   const usage = utils.calculatePercentageRoundDown(cgmUse);
-  const percentages = utils.calculatePercentageRoundUp(
-    tirPercent,
-    usage.roundedDown
-  );
+  const percentages = utils.calculatePercentageRoundUp(tirPercent, usage.roundedDown);
   const cbgCounts = [percentages.roundedUp, percentages.remainder];
   const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
 
-  const cbgPayloadValues = await cbgPayload.cbgPayload(
-    start,
-    end,
-    increment,
-    fullCbgValues
-  );
+  const cbgPayloadValues = await cbgPayload.cbgPayload(start, end, increment, fullCbgValues);
   const temp = cbgPayloadValues[0];
-  const cbgRepeat = repeatArray(cbgPayloadValues,multiplier)
+  const cbgRepeat = repeatArray(cbgPayloadValues, multiplier);
   const { default: dataSet } = await import("../data/dataset.json", {
     with: { type: "json" },
   });
@@ -118,17 +101,9 @@ export async function uploadSMBGToCustodial(
   credentials: Credentials
 ) {
   const increment = 5; // 5 minute intervals
-  const fullSmbgValues = smbgPayload.generateExactAverageBounded(
-    smbgReadingsPerDay,
-    smbgAverage
-  );
+  const fullSmbgValues = smbgPayload.generateExactAverageBounded(smbgReadingsPerDay, smbgAverage);
 
-  const smbgPayloadValues = await smbgPayload.smbgPayload(
-    start,
-    end,
-    increment,
-    fullSmbgValues
-  );
+  const smbgPayloadValues = await smbgPayload.smbgPayload(start, end, increment, fullSmbgValues);
   const { default: dataSet } = await import("../data/dataset.json", {
     with: { type: "json" },
   });
@@ -173,41 +148,20 @@ export async function uploadLowAndHighSMBGToCustodial(
     minVal: 3.0,
     maxVal: 19.0,
   };
-  let fullSmbgValuesHigh:number[];
-  let fullSmbgValuesLow:number[];  
+  let fullSmbgValuesHigh: number[];
+  let fullSmbgValuesLow: number[];
   if (smbgLowReadingsPerDay == 0) {
-      fullSmbgValuesLow = smbgPayload.generateExactAverageBounded(
-      1,
-      11.0,
-      options
-    );
+    fullSmbgValuesLow = smbgPayload.generateExactAverageBounded(1, 11.0, options);
   } else {
-      fullSmbgValuesLow = smbgPayload.generateExactAverageBounded(
-      smbgLowReadingsPerDay,
-      1.5,
-      lowOptions
-    );
+    fullSmbgValuesLow = smbgPayload.generateExactAverageBounded(smbgLowReadingsPerDay, 1.5, lowOptions);
   }
   if (smbgHighReadingsPerDay == 0) {
-      fullSmbgValuesHigh = smbgPayload.generateExactAverageBounded(
-      1,
-      11.0,
-      options
-    );
+    fullSmbgValuesHigh = smbgPayload.generateExactAverageBounded(1, 11.0, options);
   } else {
-      fullSmbgValuesHigh = smbgPayload.generateExactAverageBounded(
-      smbgHighReadingsPerDay,
-      16.5,
-      highOptions
-    );
+    fullSmbgValuesHigh = smbgPayload.generateExactAverageBounded(smbgHighReadingsPerDay, 16.5, highOptions);
   }
   const fullSmbgValues = fullSmbgValuesHigh.concat(fullSmbgValuesLow);
-  const smbgPayloadValues = await smbgPayload.smbgPayload(
-    start,
-    end,
-    increment,
-    fullSmbgValues
-  );
+  const smbgPayloadValues = await smbgPayload.smbgPayload(start, end, increment, fullSmbgValues);
   const { default: dataSet } = await import("../data/dataset.json", {
     with: { type: "json" },
   });
@@ -239,19 +193,11 @@ export async function uploadToDSA(
 ) {
   const increment = 5; // 5 minute intervals
   const usage = utils.calculatePercentageRoundDown(cgmUse);
-  const percentages = utils.calculatePercentageRoundUp(
-    tirPercent,
-    usage.roundedDown
-  );
+  const percentages = utils.calculatePercentageRoundUp(tirPercent, usage.roundedDown);
   const cbgCounts = [percentages.roundedUp, percentages.remainder];
   const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
 
-  const cbgPayloadValues = await cbgPayload.cbgPayload(
-    start,
-    end,
-    increment,
-    fullCbgValues
-  );
+  const cbgPayloadValues = await cbgPayload.cbgPayload(start, end, increment, fullCbgValues);
   const temp = cbgPayloadValues[0];
   const { default: dataSet } = await import("../data/dataset.json", {
     with: { type: "json" },
@@ -273,19 +219,13 @@ export async function uploadToDSA(
   }
 }
 
-export async function uploadMedtronicToCustodial(
-  clinicIdParam: string,
-  userIdParam: string,
-  credentials: Credentials
-) {
+export async function uploadMedtronicToCustodial(clinicIdParam: string, userIdParam: string, credentials: Credentials) {
   const cbgPayloadValues = (await jsonTimeShifter.shiftJsonFile(
-    "./data/medtronic.json",
+    "./dist/data/medtronic.json",
     7,
     "shifted.json"
   )) as UploadPostDataPayload;
-  const temp = Array.isArray(cbgPayloadValues)
-    ? cbgPayloadValues[0]
-    : cbgPayloadValues;
+  const temp = Array.isArray(cbgPayloadValues) ? cbgPayloadValues[0] : cbgPayloadValues;
   const { default: dataSet } = await import("../data/medtronic_dataset.json", {
     with: { type: "json" },
   });
@@ -309,4 +249,46 @@ export async function uploadMedtronicToCustodial(
 
 function repeatArray<T>(arr: T[], n: number): T[] {
   return Array.from({ length: n }, () => arr).flat();
+}
+
+export async function uploadToDeviceIdCustodial(
+  deviceId: number,
+  start: Date,
+  end: Date,
+  clinicIdParam: string,
+  cbgValues: number[],
+  cgmUse: number,
+  tirPercent: number,
+  userIdParam: string,
+  credentials: Credentials
+) {
+  const increment = 5; // 5 minute intervals
+  const usage = utils.calculatePercentageRoundDown(cgmUse);
+  const percentages = utils.calculatePercentageRoundUp(tirPercent, usage.roundedDown);
+  const cbgCounts = [percentages.roundedUp, percentages.remainder];
+  const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
+
+  const cbgPayloadValues = await cbgPayload.cbgPayload(start, end, increment, fullCbgValues, deviceId);
+  const temp = cbgPayloadValues[0];
+  const { default: dataSet } = await import("../data/dataset.json", {
+    with: { type: "json" },
+  });
+  let dataSet2 = structuredClone(dataSet);
+  dataSet2["deviceId"] = dataSet["deviceId"] + deviceId.toString();
+  console.log(dataSet2["deviceId"]);
+  interface POSTResponse {}
+
+  const result = await authenticateAndUploadData(
+    credentials,
+    cbgPayloadValues as UploadPostDataPayload,
+    dataSet2 as UploadDataSet,
+    userIdParam
+  );
+
+  if (result) {
+    console.log("Successfully created post with ID:", result);
+    // The result variable now contains the response data
+  } else {
+    console.log("Failed to create post");
+  }
 }
