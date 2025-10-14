@@ -74,7 +74,7 @@ const tirLookup: Record<string, number[][]> = {
     [10.1, 14.0, 80, 25],
     [10.1, 14.0, 80, 1],
   ],
-  "Very Low >1% Time below 3.0 mmol/L": [
+  "Very Low > 1% Time below 3.0 mmol/L": [
     [2.9, 3, 69, 5],
     [2.9, 3, 69, 5],
   ],
