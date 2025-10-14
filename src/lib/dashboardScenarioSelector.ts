@@ -78,11 +78,11 @@ const tirLookup: Record<string, number[][]> = {
     [2.9, 3, 69, 5],
     [2.9, 3, 69, 5],
   ],
-  "Low >4% Time below 3.9 mmol/L": [
+  "Low > 4% Time below 3.9 mmol/L": [
     [3.8, 3.9, 70, 5],
     [3.8, 3.9, 70, 5],
   ],
-  "Highest >1% Time above 19.4 mmol/L": [
+  "Highest > 1% Time above 19.4 mmol/L": [
     [10.0, 19.5, 69, 98],
     [10.0, 19.5, 69, 98],
   ],
@@ -90,11 +90,11 @@ const tirLookup: Record<string, number[][]> = {
     [10.0, 14.0, 69, 94],
     [10.0, 14.0, 69, 94],
   ],
-  "High >25% Time above 10.0 mmol/L": [
+  "High > 25% Time above 10.0 mmol/L": [
     [10.0, 10.1, 69, 70],
     [10.0, 10.1, 69, 70],
   ],
-  "High >25% Time above 10.0 mmol/L 2": [
+  "High > 25% Time above 10.0 mmol/L 2": [
     [14.0, 10.1, 10.0, 69, 4, 22],
     [14.0, 10.1, 10.0, 69, 4, 22],
   ],
