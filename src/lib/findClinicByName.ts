@@ -1,5 +1,5 @@
-import { Credentials } from './credentials.js';
-import { fetchClinicsWithTags, ClinicPatientTag } from './fetchTags.js';
+import { Credentials } from "./credentials.js";
+import { fetchClinicsWithTags, ClinicPatientTag } from "./fetchTags.js";
 
 /**
  * Finds and returns the clinic ID that matches the specified clinic name.
@@ -7,23 +7,18 @@ import { fetchClinicsWithTags, ClinicPatientTag } from './fetchTags.js';
  * @param clinicName - The clinic name to search for
  * @returns The clinic ID if found, null if not found or an error occurs
  */
-export async function findClinicByName(
-  creds: Credentials,
-  clinicName: string
-): Promise<string | null> {
+export async function findClinicByName(creds: Credentials, clinicName: string): Promise<string | null> {
   try {
     // Fetch all clinics with their tags
     const clinicsWithTags: ClinicPatientTag[] | null = await fetchClinicsWithTags(creds);
-    
+
     if (!clinicsWithTags || clinicsWithTags.length === 0) {
-      console.error('No clinics found for the current user.');
+      console.error("No clinics found for the current user.");
       return null;
     }
 
     // Find the clinic with the matching name
-    const matchingClinic = clinicsWithTags.find(
-      (clinicWithTags) => clinicWithTags.clinic.name === clinicName
-    );
+    const matchingClinic = clinicsWithTags.find((clinicWithTags) => clinicWithTags.clinic.name === clinicName);
 
     if (!matchingClinic) {
       console.error(`Clinic with name "${clinicName}" not found.`);
@@ -33,9 +28,9 @@ export async function findClinicByName(
     return matchingClinic.clinic.id;
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error in findClinicByName:', error.message);
+      console.error("Error in findClinicByName:", error.message);
     } else {
-      console.error('Unknown error in findClinicByName:', error);
+      console.error("Unknown error in findClinicByName:", error);
     }
     return null;
   }
@@ -47,16 +42,13 @@ export async function findClinicByName(
  * @param clinicName - The clinic name to search for (case-insensitive)
  * @returns The clinic ID if found, null if not found or an error occurs
  */
-export async function findClinicByNameCaseInsensitive(
-  creds: Credentials,
-  clinicName: string
-): Promise<string | null> {
+export async function findClinicByNameCaseInsensitive(creds: Credentials, clinicName: string): Promise<string | null> {
   try {
     // Fetch all clinics with their tags
     const clinicsWithTags: ClinicPatientTag[] | null = await fetchClinicsWithTags(creds);
-    
+
     if (!clinicsWithTags || clinicsWithTags.length === 0) {
-      console.error('No clinics found for the current user.');
+      console.error("No clinics found for the current user.");
       return null;
     }
 
@@ -73,9 +65,9 @@ export async function findClinicByNameCaseInsensitive(
     return matchingClinic.clinic.id;
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error in findClinicByNameCaseInsensitive:', error.message);
+      console.error("Error in findClinicByNameCaseInsensitive:", error.message);
     } else {
-      console.error('Unknown error in findClinicByNameCaseInsensitive:', error);
+      console.error("Unknown error in findClinicByNameCaseInsensitive:", error);
     }
     return null;
   }
@@ -94,15 +86,15 @@ export async function findClinicsByNamePartial(
   try {
     // Fetch all clinics with their tags
     const clinicsWithTags: ClinicPatientTag[] | null = await fetchClinicsWithTags(creds);
-    
+
     if (!clinicsWithTags || clinicsWithTags.length === 0) {
-      console.error('No clinics found for the current user.');
+      console.error("No clinics found for the current user.");
       return [];
     }
 
     // Find all clinics that contain the search text (case-insensitive)
-    const matchingClinics = clinicsWithTags.filter(
-      (clinicWithTags) => clinicWithTags.clinic.name.toLowerCase().includes(searchText.toLowerCase())
+    const matchingClinics = clinicsWithTags.filter((clinicWithTags) =>
+      clinicWithTags.clinic.name.toLowerCase().includes(searchText.toLowerCase())
     );
 
     if (matchingClinics.length === 0) {
@@ -110,15 +102,15 @@ export async function findClinicsByNamePartial(
       return [];
     }
 
-    return matchingClinics.map(clinic => ({
+    return matchingClinics.map((clinic) => ({
       id: clinic.clinic.id,
-      name: clinic.clinic.name
+      name: clinic.clinic.name,
     }));
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error in findClinicsByNamePartial:', error.message);
+      console.error("Error in findClinicsByNamePartial:", error.message);
     } else {
-      console.error('Unknown error in findClinicsByNamePartial:', error);
+      console.error("Unknown error in findClinicsByNamePartial:", error);
     }
     return [];
   }
