@@ -59,3 +59,47 @@ export async function cbgPayload(
 export function duplicateEntries<T>(sourceArray: T[], countsArray: number[]): T[] {
   return sourceArray.flatMap((item, index) => Array(countsArray[index] || 0).fill(item));
 }
+
+export async function cbgPayloadSampleInterval(
+  startDate: Date,
+  timeInSeconds: number[],
+  sampleIntervals: number[],
+  deviceId?: number
+): Promise<CbgDataPoint[]> {
+  // Validate arrays have same length
+  if (timeInSeconds.length !== sampleIntervals.length) {
+    throw new Error("timeInSeconds, sampleIntervals, and cbgValues arrays must have the same length");
+  }
+
+  // Dynamically import the CBG template JSON
+  const { default: jsonData } = await import("../data/cbg.json", { with: { type: "json" } });
+  const payload: CbgDataPoint[] = [];
+
+  let currentDate = new Date(startDate);
+
+  for (let i = 0; i < timeInSeconds.length; i++) {
+    const dataPoint: CbgDataPoint = { ...structuredClone(jsonData) };
+
+    // Add timeInSeconds[i] to get the current point's date
+    currentDate = new Date(startDate.getTime() + timeInSeconds[i] * 1000);
+    dataPoint.time = currentDate.toISOString();
+
+    dataPoint.sampleInterval = sampleIntervals[i];
+    dataPoint.deviceId = dataPoint.deviceId + (deviceId?.toString() ?? "");
+
+    payload.push(dataPoint);
+  }
+
+  // Add final point at 23:55 of the current day (timezone aware)
+  const lastDate = new Date(currentDate);
+  lastDate.setHours(23, 55, 0, 0);
+
+  const finalDataPoint: CbgDataPoint = { ...structuredClone(jsonData) };
+  finalDataPoint.time = lastDate.toISOString();
+  finalDataPoint.sampleInterval = sampleIntervals[sampleIntervals.length - 1]; // Use last interval
+  finalDataPoint.deviceId = finalDataPoint.deviceId + (deviceId?.toString() ?? "");
+
+  payload.push(finalDataPoint);
+
+  return payload;
+}

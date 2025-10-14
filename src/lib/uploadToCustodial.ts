@@ -10,6 +10,7 @@ import * as utils from "./Utils.js";
 import * as jsonTimeShifter from "./jsonTimeShifter.js";
 import { Credentials } from "./credentials.js";
 import { BoundedAverageOptions } from "./smbgPayload.js";
+import { time } from "console";
 
 export async function uploadToCustodial(
   start: Date,
@@ -282,6 +283,77 @@ export async function uploadToDeviceIdCustodial(
     credentials,
     cbgPayloadValues as UploadPostDataPayload,
     dataSet2 as UploadDataSet,
+    userIdParam
+  );
+
+  if (result) {
+    console.log("Successfully created post with ID:", result);
+    // The result variable now contains the response data
+  } else {
+    console.log("Failed to create post");
+  }
+}
+
+export async function uploadToCustodialSampleInterval(
+  start: Date,
+  timeInSeconds: number[],
+  sampleIntervals: number[],
+  userIdParam: string,
+  credentials: Credentials
+) {
+  const cbgPayloadValues = await cbgPayload.cbgPayloadSampleInterval(start, timeInSeconds, sampleIntervals);
+
+  const { default: dataSet } = await import("../data/dataset.json", {
+    with: { type: "json" },
+  });
+
+  interface POSTResponse {}
+
+  const result = await authenticateAndUploadData(
+    credentials,
+    cbgPayloadValues as UploadPostDataPayload,
+    dataSet as UploadDataSet,
+    userIdParam
+  );
+
+  if (result) {
+    console.log("Successfully created post with ID:", result);
+    // The result variable now contains the response data
+  } else {
+    console.log("Failed to create post");
+  }
+}
+
+export async function uploadToCustodial2(
+  start: Date,
+  end: Date,
+  clinicIdParam: string,
+  cbgValues: number[],
+  cgmUse: number,
+  tirPercent1: number,
+  tirPercent2: number,
+  userIdParam: string,
+  credentials: Credentials
+) {
+  const increment = 5; // 5 minute intervals
+  const usage = utils.calculatePercentageRoundDown(cgmUse);
+  const percentages1 = utils.calculatePercentageRoundUp(tirPercent1, usage.roundedDown);
+  const percentages2 = utils.calculatePercentageRoundUp(tirPercent2, percentages1.remainder);
+  const cbgCounts = [percentages1.roundedUp, percentages2.roundedUp, percentages2.remainder];
+  const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
+
+  const cbgPayloadValues = await cbgPayload.cbgPayload(start, end, increment, fullCbgValues);
+  const temp = cbgPayloadValues[0];
+  const { default: dataSet } = await import("../data/dataset.json", {
+    with: { type: "json" },
+  });
+
+  interface POSTResponse {}
+
+  const result = await authenticateAndUploadData(
+    credentials,
+    cbgPayloadValues as UploadPostDataPayload,
+    dataSet as UploadDataSet,
     userIdParam
   );
 

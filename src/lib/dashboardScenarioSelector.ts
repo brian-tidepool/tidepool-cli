@@ -6,6 +6,7 @@ import * as uploadToCustodial from "./uploadToCustodial.js";
 import * as createPatient from "./createPatient.js";
 import { off } from "process";
 import { Credentials } from "./credentials.js";
+import { time } from "console";
 
 // Define the key-value pair structure
 const tirLookup: Record<string, number[][]> = {
@@ -38,8 +39,8 @@ const tirLookup: Record<string, number[][]> = {
     [3.8, 3.9, 59, 1],
   ],
   "Meeting Targets": [
-    [3.8, 3.9, 75, 1],
-    [3.8, 3.9, 75, 1],
+    [3.8, 3.9, 100, 1],
+    [3.8, 3.9, 100, 1],
   ],
   "Drop in Time in Very Low > 15%": [
     [10.1, 2.9, 80, 1],
@@ -93,9 +94,13 @@ const tirLookup: Record<string, number[][]> = {
     [10.0, 10.1, 69, 70],
     [10.0, 10.1, 69, 70],
   ],
+  "High >25% Time above 10.0 mmol/L 2": [
+    [14.0, 10.1, 10.0, 69, 4, 22],
+    [14.0, 10.1, 10.0, 69, 4, 22],
+  ],
   "Large Drop in Time in Range > 15%": [
     [10.1, 3.9, 80, 1],
-    [10.1, 3.9, 80, 25],
+    [10.1, 3.9, 80, 20],
   ],
   "Low Time in Range < 70%": [
     [10.0, 10.1, 80, 69],
@@ -308,27 +313,53 @@ export async function createDashboardOffset(
       console.log("patientId", patientIds[patientCounter]);
       console.log(end);
       console.log(end2);
-      await uploadToCustodial.uploadToCustodial(
-        start1,
-        end1,
-        clinicId,
-        tirLookup[key][0].slice(0, 2),
-        tirLookup[key][0][2],
-        tirLookup[key][0][3],
-        patientIds[patientCounter],
-        creds
-      );
-      await uploadToCustodial.uploadToCustodial(
-        start2,
-        end2,
-        clinicId,
-        tirLookup[key][1].slice(0, 2),
-        tirLookup[key][1][2],
-        tirLookup[key][1][3],
-        patientIds[patientCounter],
-        creds
-      );
-      patientCounter++;
+      if (key.endsWith("2")) {
+        await uploadToCustodial.uploadToCustodial2(
+          start1,
+          end1,
+          clinicId,
+          tirLookup[key][0].slice(0, 3),
+          tirLookup[key][0][3],
+          tirLookup[key][0][4],
+          tirLookup[key][0][5],
+          patientIds[patientCounter],
+          creds
+        );
+        await uploadToCustodial.uploadToCustodial2(
+          start2,
+          end2,
+          clinicId,
+          tirLookup[key][1].slice(0, 3),
+          tirLookup[key][1][3],
+          tirLookup[key][1][4],
+          tirLookup[key][1][5],
+          patientIds[patientCounter],
+          creds
+        );
+        patientCounter++;
+      } else {
+        await uploadToCustodial.uploadToCustodial(
+          start1,
+          end1,
+          clinicId,
+          tirLookup[key][0].slice(0, 2),
+          tirLookup[key][0][2],
+          tirLookup[key][0][3],
+          patientIds[patientCounter],
+          creds
+        );
+        await uploadToCustodial.uploadToCustodial(
+          start2,
+          end2,
+          clinicId,
+          tirLookup[key][1].slice(0, 2),
+          tirLookup[key][1][2],
+          tirLookup[key][1][3],
+          patientIds[patientCounter],
+          creds
+        );
+        patientCounter++;
+      }
     }
   }
 }
@@ -803,6 +834,50 @@ export async function createDeviceIdDashboardOffset(
     tirLookup2["High"][1].slice(0, 2),
     tirLookup2["High"][0][2],
     tirLookup2["High"][1][3],
+    patientIds[patientCounter],
+    creds
+  );
+}
+
+export async function createDashboardSampleInterval(
+  timeInSeconds: number[],
+  sampleIntervals: number[],
+  dayOffset: number,
+  clinicId: string,
+  tagId: string,
+  creds: Credentials,
+  patientName: string
+) {
+  let patientIds = [];
+  console.log("Creating patients");
+  let counter = 0;
+
+  let payload = {
+    password: "tidepool",
+    birthDate: "2000-01-01",
+    fullName: `sampleInterval ${patientName}`,
+    tags: [],
+    connectDexcom: false,
+  };
+  let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
+  counter++;
+  if (patientId) {
+    patientIds.push(patientId);
+  }
+
+  let tagResult = addTag.addTag(creds, clinicId, patientIds, tagId);
+  await utils.sleep(20000);
+  let patientCounter = 0;
+  const start = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
+  start.setDate(start.getDate() - dayOffset);
+  start.setHours(0, 0, 0, 0);
+
+  console.log("patientId", patientIds[patientCounter]);
+
+  await uploadToCustodial.uploadToCustodialSampleInterval(
+    start,
+    timeInSeconds,
+    sampleIntervals,
     patientIds[patientCounter],
     creds
   );

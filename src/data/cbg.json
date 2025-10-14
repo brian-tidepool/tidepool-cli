@@ -4,5 +4,6 @@
   "type": "cbg",
   "units": "mmol/l",
   "time": "2024-11-18T09:47:00.000Z",
-  "value": 130.24200000000002
+  "value": 5.24200000000002,
+  "sampleInterval": 300000
 }

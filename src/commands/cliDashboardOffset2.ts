@@ -109,6 +109,11 @@ export default class UserDashboardOffset2 extends BaseCommand<typeof UserDashboa
       description: "period length",
       default: 14,
     }),
+    high2: Flags.integer({
+      char: "u",
+      description: "High >25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
   };
 
   public async run(): Promise<void> {
@@ -127,6 +132,7 @@ export default class UserDashboardOffset2 extends BaseCommand<typeof UserDashboa
       "Highest >1% Time above 19.4 mmol/L": flags.highest,
       "Very High >5% Time above 13.9 mmol/L": flags.veryhigh,
       "High >25% Time above 10.0 mmol/L": flags.high,
+      "High >25% Time above 10.0 mmol/L 2": flags.high2,
       "Large Drop in Time in Range > 15%": flags.largedrop,
       "Low Time in Range < 70%": flags.lowtime,
       "Low CGM Wear Time < 70%": flags.lowcgm,
