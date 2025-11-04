@@ -99,7 +99,8 @@ export async function uploadSMBGToCustodial(
   smbgAverage: number,
   smbgReadingsPerDay: number,
   userIdParam: string,
-  credentials: Credentials
+  credentials: Credentials,
+  interval: number
 ) {
   const increment = 5; // 5 minute intervals
   const fullSmbgValues = smbgPayload.generateExactAverageBounded(smbgReadingsPerDay, smbgAverage);
