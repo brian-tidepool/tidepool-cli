@@ -39,8 +39,8 @@ const tirLookup: Record<string, number[][]> = {
     [3.8, 3.9, 59, 1],
   ],
   "Meeting Targets": [
-    [3.8, 3.9, 100, 1],
-    [3.8, 3.9, 100, 1],
+    [3.8, 3.9, 75, 1],
+    [3.8, 3.9, 75, 1],
   ],
   "Drop in Time in Very Low > 15%": [
     [10.1, 2.9, 80, 1],
@@ -469,7 +469,8 @@ export async function createSMBGDashboardOffset(
   patientName: string,
   clinicId: string,
   tagId: string,
-  creds: Credentials
+  creds: Credentials,
+  interval: number
 ) {
   let patientIds = [];
   console.log("Creating patients");
@@ -512,7 +513,8 @@ export async function createSMBGDashboardOffset(
         smbgLookup[key][0][0],
         smbgLookup[key][0][1],
         patientIds[patientCounter],
-        creds
+        creds,
+        interval
       );
       await uploadToCustodial.uploadSMBGToCustodial(
         start2,
@@ -521,7 +523,8 @@ export async function createSMBGDashboardOffset(
         smbgLookup[key][1][0],
         smbgLookup[key][1][1],
         patientIds[patientCounter],
-        creds
+        creds,
+        interval
       );
       patientCounter++;
     }
