@@ -98,6 +98,14 @@ const tirLookup: Record<string, number[][]> = {
     [14.0, 10.1, 10.0, 69, 4, 22],
     [14.0, 10.1, 10.0, 69, 4, 22],
   ],
+  "exact101_3": [
+    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 85, 81, 72, 25, 25],
+    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 85, 81, 72, 25, 25],
+  ],
+  "exact99_3": [
+    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 73, 73, 72, 35, 35],
+    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 73, 73, 72 , 35, 35],
+  ],
   "Large Drop in Time in Range > 15%": [
     [10.1, 3.9, 80, 1],
     [10.1, 3.9, 80, 20],
@@ -333,6 +341,28 @@ export async function createDashboardOffset(
           tirLookup[key][1][3],
           tirLookup[key][1][4],
           tirLookup[key][1][5],
+          patientIds[patientCounter],
+          creds
+        );
+        patientCounter++;
+      } else if (key.endsWith("3")) {
+        await uploadToCustodial.uploadToCustodial3(
+          start1,
+          end1,
+          clinicId,
+          tirLookup[key][0].slice(0, 5),
+          tirLookup[key][0][5],
+          tirLookup[key][0].slice(7, 12),
+          patientIds[patientCounter],
+          creds
+        );
+        await uploadToCustodial.uploadToCustodial3(
+          start2,
+          end2,
+          clinicId,
+          tirLookup[key][1].slice(0, 5),
+          tirLookup[key][1][5],
+          tirLookup[key][1].slice(7, 12),
           patientIds[patientCounter],
           creds
         );

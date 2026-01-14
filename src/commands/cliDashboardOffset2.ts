@@ -66,27 +66,27 @@ export default class UserDashboardOffset2 extends BaseCommand<typeof UserDashboa
     }),
     verylow: Flags.integer({
       char: "k",
-      description: "Very Low >1% Time below 3.0 mmol/L",
+      description: "Very Low > 1% Time below 3.0 mmol/L",
       default: 0,
     }),
     low: Flags.integer({
       char: "l",
-      description: "Low >4% Time below 3.9 mmol/L",
+      description: "Low > 4% Time below 3.9 mmol/L",
       default: 0,
     }),
     highest: Flags.integer({
       char: "m",
-      description: "Highest >1% Time above 19.4 mmol/L",
+      description: "Highest > 1% Time above 19.4 mmol/L",
       default: 0,
     }),
     veryhigh: Flags.integer({
       char: "n",
-      description: "Very High >5% Time above 13.9 mmol/L",
+      description: "Very High > 5% Time above 13.9 mmol/L",
       default: 0,
     }),
     high: Flags.integer({
       char: "o",
-      description: "High >25% Time above 10.0 mmol/L",
+      description: "High > 25% Time above 10.0 mmol/L",
       default: 0,
     }),
     largedrop: Flags.integer({
@@ -111,7 +111,17 @@ export default class UserDashboardOffset2 extends BaseCommand<typeof UserDashboa
     }),
     high2: Flags.integer({
       char: "u",
-      description: "High >25% Time above 10.0 mmol/L 2",
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+    exact101: Flags.integer({
+      char: "v",
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+    exact99: Flags.integer({
+      char: "w",
+      description: "High > 25% Time above 10.0 mmol/L 2",
       default: 0,
     }),
   };
@@ -121,18 +131,20 @@ export default class UserDashboardOffset2 extends BaseCommand<typeof UserDashboa
     this.recordHistory();
 
     const tirCounts: Record<string, number> = {
+      "exact101_3": flags.exact101,
+      "exact99_3": flags.exact99,
       "Time below 3.0 mmol/L > 1%": flags.below3,
       "Time below 3.9 mmol/L > 4%": flags.below39,
       "Drop in Time in Range > 15%": flags.drop,
       "Time in Range < 70%": flags.lesstir70,
       "CGM Wear Time < 70%": flags.lesscgm70,
       "Meeting Targets": flags.meetingTargets,
-      "Very Low >1% Time below 3.0 mmol/L": flags.verylow,
-      "Low >4% Time below 3.9 mmol/L": flags.low,
-      "Highest >1% Time above 19.4 mmol/L": flags.highest,
-      "Very High >5% Time above 13.9 mmol/L": flags.veryhigh,
-      "High >25% Time above 10.0 mmol/L": flags.high,
-      "High >25% Time above 10.0 mmol/L 2": flags.high2,
+      "Very Low > 1% Time below 3.0 mmol/L": flags.verylow,
+      "Low > 4% Time below 3.9 mmol/L": flags.low,
+      "Highest > 1% Time above 19.4 mmol/L": flags.highest,
+      "Very High > 5% Time above 13.9 mmol/L": flags.veryhigh,
+      "High > 25% Time above 10.0 mmol/L": flags.high,
+      "High > 25% Time above 10.0 mmol/L 2": flags.high2,
       "Large Drop in Time in Range > 15%": flags.largedrop,
       "Low Time in Range < 70%": flags.lowtime,
       "Low CGM Wear Time < 70%": flags.lowcgm,

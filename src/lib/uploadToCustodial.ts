@@ -365,3 +365,41 @@ export async function uploadToCustodial2(
     console.log("Failed to create post");
   }
 }
+
+export async function uploadToCustodial3(
+  start: Date,
+  end: Date,
+  clinicIdParam: string,
+  cbgValues: number[],
+  cgmUse: number,
+  cbgCounts: number[],
+  userIdParam: string,
+  credentials: Credentials
+) {
+  const increment = 5; // 5 minute intervals
+  const usage = utils.calculatePercentageRoundDown(cgmUse);
+
+  const fullCbgValues = cbgPayload.duplicateEntries(cbgValues, cbgCounts);
+
+  const cbgPayloadValues = await cbgPayload.cbgPayload(start, end, increment, fullCbgValues);
+  const temp = cbgPayloadValues[0];
+  const { default: dataSet } = await import("../data/dataset.json", {
+    with: { type: "json" },
+  });
+
+  interface POSTResponse {}
+
+  const result = await authenticateAndUploadData(
+    credentials,
+    cbgPayloadValues as UploadPostDataPayload,
+    dataSet as UploadDataSet,
+    userIdParam
+  );
+
+  if (result) {
+    console.log("Successfully created post with ID:", result);
+    // The result variable now contains the response data
+  } else {
+    console.log("Failed to create post");
+  }
+}

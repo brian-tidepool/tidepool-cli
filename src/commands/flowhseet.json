@@ -1,0 +1,842 @@
+{
+  "url": "https://evening-earth.redoxengine.com/endpoint/message",
+  "method": "POST",
+  "headers": {
+    "source-host": "https://candi.redoxengine.com",
+    "verification-token": "****Hidden by Redox****",
+    "application-name": "RedoxEngine",
+    "Authorization": "****Hidden by Redox****",
+    "content-type": "application/json"
+  },
+  "body": {
+    "Meta": {
+      "DataModel": "Flowsheet",
+      "EventType": "New",
+      "EventDateTime": "2025-11-11T22:19:59Z",
+      "Test": true,
+      "Source": {
+        "ID": "70a407f3-0c15-405a-8017-283e5934c75b",
+        "Name": "Redox Request Ingress (Development)"
+      },
+      "Destinations": [
+        {
+          "ID": "af394f14-b34a-464f-8d24-895f370af4c9",
+          "Name": "Redox EMR"
+        }
+      ],
+      "Logs": [
+        {
+          "ID": "019a7501-7c07-7dc2-9bcd-bb9d95fd9373",
+          "AttemptID": "019a7501-7c07-7291-85e7-2d5b8559572b"
+        }
+      ],
+      "FacilityCode": null
+    },
+    "Patient": {
+      "Identifiers": [
+        {
+          "ID": "0000000311",
+          "IDType": "MRN"
+        },
+        {
+          "ID": "e167267c-16c9-4fe3-96ae-9cff5703e90a",
+          "IDType": "EHRID"
+        },
+        {
+          "ID": "a1d4ee8aba494ca",
+          "IDType": "NIST"
+        }
+      ],
+      "Demographics": {
+        "FirstName": "Timothy",
+        "MiddleName": "Paul",
+        "LastName": "Bixby",
+        "DOB": "2003-01-02",
+        "SSN": "101-01-0001",
+        "Sex": "Male",
+        "Race": "White",
+        "IsHispanic": null,
+        "Religion": null,
+        "MaritalStatus": "Single",
+        "IsDeceased": null,
+        "DeathDateTime": null,
+        "PhoneNumber": {
+          "Home": "+18088675301",
+          "Office": null,
+          "Mobile": null
+        },
+        "EmailAddresses": [],
+        "Language": "en",
+        "Citizenship": [],
+        "Address": {
+          "StreetAddress": "4762 Hickory Street",
+          "City": "Monroe",
+          "State": "WI",
+          "ZIP": "53566",
+          "County": "Green",
+          "Country": "US"
+        }
+      },
+      "Notes": [],
+      "Contacts": []
+    },
+    "Visit": {
+      "VisitNumber": "1234",
+      "AccountNumber": null,
+      "VisitDateTime": null,
+      "Location": {
+        "Type": "Inpatient",
+        "Facility": "RES General Hospital",
+        "FacilityIdentifiers": [],
+        "Department": "3N",
+        "DepartmentIdentifiers": [],
+        "Room": "136",
+        "Bed": "B"
+      },
+      "Extensions": {
+        "additional-identifier": {
+          "url": "https://api.redoxengine.com/extensions/additional-identifier",
+          "identifier": {
+            "type": "orderId",
+            "value": "157968300"
+          }
+        },
+        "additional-provider-info": {
+          "url": "https://api.redoxengine.com/extensions/additional-provider-info",
+          "participants": [
+            {
+              "id": "4356789876",
+              "idType": "NPI",
+              "person": {
+                "name": {
+                  "given": ["Pat"],
+                  "family": "Granite"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Observations": [
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "2025-10-28T18:30:12Z",
+        "ValueType": "DateTime",
+        "Units": null,
+        "Code": "REPORTING_PERIOD_START_CGM",
+        "Codeset": null,
+        "Description": "CGM Reporting Period Start",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "2025-11-11T18:30:12Z",
+        "ValueType": "DateTime",
+        "Units": null,
+        "Code": "REPORTING_PERIOD_END_CGM",
+        "Codeset": null,
+        "Description": "CGM Reporting Period End",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "2025-10-28T18:30:12Z",
+        "ValueType": "DateTime",
+        "Units": null,
+        "Code": "REPORTING_PERIOD_START_CGM_DATA",
+        "Codeset": null,
+        "Description": "CGM Reporting Period Start Date of actual Data",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "6",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_ABOVE_RANGE_VERY_HIGH_CGM",
+        "Codeset": null,
+        "Description": "CGM Level 2 Hyperglycemia: Time above range (TAR-VH): % of readings and time >250 mg/dL (>13.9 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "8",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_ABOVE_RANGE_HIGH_CGM",
+        "Codeset": null,
+        "Description": "CGM Time in Level 1 Hyperglycemia: Time above range (TAR-H): % of readings and time 181–250 mg/dL (10.1–13.9 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "64",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_IN_RANGE_CGM",
+        "Codeset": null,
+        "Description": "CGM Time in Range: Time in range (TIR): % of readings and time 70–180 mg/dL (3.9–10.0 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "15",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_BELOW_RANGE_LOW_CGM",
+        "Codeset": null,
+        "Description": "CGM Time in Level 1 Hypoglycemia: Time below range (TBR-L): % of readings and time 54–69 mg/dL (3.0–3.8 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "7",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_BELOW_RANGE_VERY_LOW_CGM",
+        "Codeset": null,
+        "Description": "CGM Time in Level 2 Hypoglycemia: <Time below range (TBR-VL): % of readings and time <54 mg/dL (<3.0 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "6.2",
+        "ValueType": "Numeric",
+        "Units": null,
+        "Code": "GLUCOSE_MANAGEMENT_INDICATOR",
+        "Codeset": null,
+        "Description": "CGM Glucose Management Indicator during reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "123",
+        "ValueType": "Numeric",
+        "Units": "mg/dL",
+        "Code": "AVERAGE_CGM",
+        "Codeset": null,
+        "Description": "CGM Average Glucose during reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "62.7",
+        "ValueType": "Numeric",
+        "Units": "mg/dL",
+        "Code": "STANDARD_DEVIATION_CGM",
+        "Codeset": null,
+        "Description": "The standard deviation of CGM measurements during the reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "51.2",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "COEFFICIENT_OF_VARIATION_CGM",
+        "Codeset": null,
+        "Description": "The coefficient of variation (standard deviation * 100 / mean) of CGM measurements during the reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "71.90",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "ACTIVE_WEAR_TIME_CGM",
+        "Codeset": null,
+        "Description": "Percentage of time CGM worn during reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "11",
+        "ValueType": "Numeric",
+        "Units": "day",
+        "Code": "DAYS_WITH_DATA_CGM",
+        "Codeset": null,
+        "Description": "Number of days with at least one CGM datum during the reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-11-11T22:19:59Z",
+        "Value": "244",
+        "ValueType": "Numeric",
+        "Units": "hour",
+        "Code": "HOURS_WITH_DATA_CGM",
+        "Codeset": null,
+        "Description": "Number of hours with at least one CGM datum during the reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "2025-03-18T15:26:01Z",
+        "ValueType": "DateTime",
+        "Units": null,
+        "Code": "REPORTING_PERIOD_START_SMBG",
+        "Codeset": null,
+        "Description": "SMBG Reporting Period Start",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "2025-04-01T15:26:01Z",
+        "ValueType": "DateTime",
+        "Units": null,
+        "Code": "REPORTING_PERIOD_END_SMBG",
+        "Codeset": null,
+        "Description": "SMBG Reporting Period End",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "2025-03-18T15:26:01Z",
+        "ValueType": "DateTime",
+        "Units": null,
+        "Code": "REPORTING_PERIOD_START_SMBG_DATA",
+        "Codeset": null,
+        "Description": "SMBG Reporting Period Start Date of actual Data",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "0.0",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_ABOVE_RANGE_VERY_HIGH_SMBG",
+        "Codeset": null,
+        "Description": "% of readings > 250 mg/dL (>13.9 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "0.0",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_ABOVE_RANGE_HIGH_SMBG",
+        "Codeset": null,
+        "Description": "% of readings between 181–250 mg/dL (10.1–13.9 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "83",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_IN_RANGE_SMBG",
+        "Codeset": null,
+        "Description": "% of readings between 70–180 mg/dL (3.9–10.0 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "17",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_BELOW_RANGE_LOW_SMBG",
+        "Codeset": null,
+        "Description": "% of readings between 54–69 mg/dL (3.0–3.8 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "0.0",
+        "ValueType": "Numeric",
+        "Units": "%",
+        "Code": "TIME_BELOW_RANGE_VERY_LOW_SMBG",
+        "Codeset": null,
+        "Description": "% of readings < 54 mg/dL (<3.0 mmol/L)",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "0",
+        "ValueType": "Numeric",
+        "Units": null,
+        "Code": "READINGS_ABOVE_RANGE_VERY_HIGH_SMBG",
+        "Codeset": null,
+        "Description": "SMBG Level 2 Hyperglycemia: Number of readings above range (TAR-VH) time >250 mg/dL (>13.9 mmol/L) during reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "0",
+        "ValueType": "Numeric",
+        "Units": null,
+        "Code": "READINGS_BELOW_RANGE_VERY_LOW_SMBG",
+        "Codeset": null,
+        "Description": "SMBG Level 2 Hypoglycemia Events: Number of readings <54 mg/dL (<3.0 mmol/L) during reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "153",
+        "ValueType": "Numeric",
+        "Units": "mg/dL",
+        "Code": "MAX_SMBG",
+        "Codeset": null,
+        "Description": "Maximum blood glucose reading over the time period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "60",
+        "ValueType": "Numeric",
+        "Units": "mg/dL",
+        "Code": "MIN_SMBG",
+        "Codeset": null,
+        "Description": "Minimum blood glucose reading over the time period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "118",
+        "ValueType": "Numeric",
+        "Units": "mg/dL",
+        "Code": "AVERAGE_SMBG",
+        "Codeset": null,
+        "Description": "SMBG Average Glucose during reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "6",
+        "ValueType": "Numeric",
+        "Units": null,
+        "Code": "TOTAL_READING_COUNT_SMBG",
+        "Codeset": null,
+        "Description": "The total number of SMBG readings taken during the SMBG Reporting Period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "0.4286",
+        "ValueType": "Numeric",
+        "Units": null,
+        "Code": "CHECK_RATE_READINGS_DAY_SMBG",
+        "Codeset": null,
+        "Description": "Average Numeric of SMBG readings per day during reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      },
+      {
+        "DateTime": "2025-08-21T09:28:27Z",
+        "Value": "4",
+        "ValueType": "Numeric",
+        "Units": "day",
+        "Code": "DAYS_WITH_DATA_SMBG",
+        "Codeset": null,
+        "Description": "The total number of days with at least 1 SMBG reading over the reporting period",
+        "Status": null,
+        "Notes": [],
+        "Observer": {
+          "ID": null,
+          "IDType": null,
+          "FirstName": null,
+          "LastName": null
+        },
+        "ReferenceRange": {
+          "Low": null,
+          "High": null,
+          "Text": null
+        },
+        "AbnormalFlag": null
+      }
+    ]
+  },
+  "json": true,
+  "isOnPrem": false,
+  "timeout": 45000,
+  "followRedirect": false,
+  "followAllRedirects": false
+}
