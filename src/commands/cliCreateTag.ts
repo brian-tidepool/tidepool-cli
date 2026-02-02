@@ -25,12 +25,10 @@ export default class CreateTag extends BaseCommand<typeof CreateTag> {
     const { flags } = await this.parse(CreateTag);
     this.recordHistory();
 
-    const statusCode = await createTag(this.credentials, flags.clinicId, flags.tagName);
+    const tagId = await createTag(this.credentials, flags.clinicId, flags.tagName);
 
-    if (statusCode === 200 || statusCode === 201) {
-      this.log(`Successfully created tag "${flags.tagName}" in clinic: ${flags.clinicId}`);
-    } else if (statusCode) {
-      this.log(`Failed to create tag. Status code: ${statusCode}`);
+    if (tagId) {
+      this.log(`Successfully created tag "${flags.tagName}" with ID: ${tagId} in clinic: ${flags.clinicId}`);
     } else {
       this.log(`Error creating tag "${flags.tagName}" in clinic: ${flags.clinicId}`);
     }

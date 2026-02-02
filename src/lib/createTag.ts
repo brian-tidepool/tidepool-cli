@@ -5,13 +5,13 @@ import { Credentials } from './credentials.js';
  * @param creds Credentials object
  * @param clinicId Clinic ID
  * @param tagName Name of the tag to create
- * @returns HTTP status code on success, or null on error
+ * @returns Tag ID on success, or null on error
  */
 export async function createTag(
   creds: Credentials,
   clinicId: string,
   tagName: string
-): Promise<number | null> {
+): Promise<string | null> {
   try {
     // Step 1: Login with basic auth
     const loginResponse = await fetch(`${creds.baseUrl}/auth/login`, {
@@ -40,8 +40,14 @@ export async function createTag(
         name: tagName
       })
     });
-    console.log(postResponse.status);
-    return postResponse.status;
+    
+    if (!postResponse.ok) {
+      throw new Error(`Create tag failed: ${postResponse.status} ${postResponse.statusText}`);
+    }
+    
+    const responseData = await postResponse.json();
+    console.log(`Tag created with ID: ${responseData.id}`);
+    return responseData.id;
   } catch (error) {
     console.error('Error in createTag:', error);
     return null;
