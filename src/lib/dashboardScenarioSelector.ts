@@ -9,119 +9,145 @@ import { Credentials } from "./credentials.js";
 import { time } from "console";
 
 // Define the key-value pair structure
-const tirLookup: Record<string, number[][]> = {
-  "Time below 3.0 mmol/L > 1%": [
-    [2.9, 3, 69, 5],
-    [2.9, 3, 69, 5],
-  ],
-  "Time below 3.9 mmol/L > 4%": [
-    [3.8, 3.9, 70, 5],
-    [3.8, 3.9, 70, 5],
-  ],
-  "Drop in Time in Range > 15%": [
-    [10.1, 3.9, 80, 1],
-    [10.1, 3.9, 80, 25],
-  ],
-  "Rise in Time in Range > 15%": [
-    [10.1, 3.9, 80, 25],
-    [10.1, 3.9, 80, 1],
-  ],
-  "Time in Range < 70%": [
-    [10.0, 10.1, 80, 69],
-    [10.0, 10.1, 80, 69],
-  ],
-  "CGM Wear Time < 70%": [
-    [3.8, 3.9, 69, 1],
-    [3.8, 3.9, 69, 1],
-  ],
-  "CGM Wear Time < 60%": [
-    [3.8, 3.9, 59, 1],
-    [3.8, 3.9, 59, 1],
-  ],
-  "Meeting Targets": [
-    [3.8, 3.9, 75, 1],
-    [3.8, 3.9, 75, 1],
-  ],
-  "Drop in Time in Very Low > 15%": [
-    [10.1, 2.9, 80, 1],
-    [10.1, 2.9, 80, 25],
-  ],
-  "Rise in Time in Very Low > 15%": [
-    [10.1, 2.9, 80, 25],
-    [10.1, 2.9, 80, 1],
-  ],
-  "Drop in Time in Low > 15%": [
-    [10.1, 3.8, 80, 1],
-    [10.1, 3.8, 80, 25],
-  ],
-  "Rise in Time in Low > 15%": [
-    [10.1, 3.8, 80, 25],
-    [10.1, 3.8, 80, 1],
-  ],
-  "Drop in Time in High > 15%": [
-    [2.9, 10.1, 80, 1],
-    [2.9, 10.1, 80, 25],
-  ],
-  "Rise in Time in High > 15%": [
-    [2.9, 10.1, 80, 25],
-    [2.9, 10.1, 80, 1],
-  ],
-  "Drop in Time in Very High > 15%": [
-    [10.1, 14.0, 80, 1],
-    [10.1, 14.0, 80, 25],
-  ],
-  "Rise in Time in Very High > 15%": [
-    [10.1, 14.0, 80, 25],
-    [10.1, 14.0, 80, 1],
-  ],
-  "Very Low > 1% Time below 3.0 mmol/L": [
-    [2.9, 3, 69, 5],
-    [2.9, 3, 69, 5],
-  ],
-  "Low > 4% Time below 3.9 mmol/L": [
-    [3.8, 3.9, 70, 5],
-    [3.8, 3.9, 70, 5],
-  ],
-  "Highest > 1% Time above 19.4 mmol/L": [
-    [10.0, 19.5, 69, 98],
-    [10.0, 19.5, 69, 98],
-  ],
-  "Very High > 5% Time above 13.9 mmol/L": [
-    [10.0, 14.0, 69, 94],
-    [10.0, 14.0, 69, 94],
-  ],
-  "High > 25% Time above 10.0 mmol/L": [
-    [10.0, 10.1, 69, 70],
-    [10.0, 10.1, 69, 70],
-  ],
-  "High > 25% Time above 10.0 mmol/L 2": [
-    [14.0, 10.1, 10.0, 69, 4, 22],
-    [14.0, 10.1, 10.0, 69, 4, 22],
-  ],
-  "exact101_3": [
-    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 85, 81, 72, 25, 25],
-    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 85, 81, 72, 25, 25],
-  ],
-  "exact99_3": [
-    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 73, 73, 72, 35, 35],
-    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 73, 73, 72 , 35, 35],
-  ],
-  "exact101a_3": [
-    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 157,81,25,0 ,25],
-    [2.9, 3.1, 4, 10.2, 14, 10.0, 100, 157,81,25,0 ,25],
-  ],
-  "Large Drop in Time in Range > 15%": [
-    [10.1, 3.9, 80, 1],
-    [10.1, 3.9, 80, 20],
-  ],
-  "Low Time in Range < 70%": [
-    [10.0, 10.1, 80, 69],
-    [10.0, 10.1, 80, 69],
-  ],
-  "Low CGM Wear Time < 70%": [
-    [3.8, 3.9, 69, 1],
-    [3.8, 3.9, 69, 1],
-  ],
+interface TirDataBasic {
+  cbgValues: number[];
+  cgmUse: number;
+  tirPercent: number;
+}
+
+interface TirData2 {
+  cbgValues: number[];
+  cgmUse: number;
+  tirPercent1: number;
+  tirPercent2: number;
+}
+
+interface TirData3 {
+  cbgValues: number[];
+  cgmUse: number;
+  cbgCounts: number[];
+}
+
+type TirData = TirDataBasic | TirData2 | TirData3;
+
+interface TirLookupEntry {
+  period1: TirData;
+  period2: TirData;
+}
+
+const tirLookup: Record<string, TirLookupEntry> = {
+  "Time below 3.0 mmol/L > 1%": {
+    period1: { cbgValues: [2.9, 3], cgmUse: 69, tirPercent: 5 },
+    period2: { cbgValues: [2.9, 3], cgmUse: 69, tirPercent: 5 },
+  },
+  "Time below 3.9 mmol/L > 4%": {
+    period1: { cbgValues: [3.8, 3.9], cgmUse: 70, tirPercent: 5 },
+    period2: { cbgValues: [3.8, 3.9], cgmUse: 70, tirPercent: 5 },
+  },
+  "Drop in Time in Range > 15%": {
+    period1: { cbgValues: [10.1, 3.9], cgmUse: 80, tirPercent: 1 },
+    period2: { cbgValues: [10.1, 3.9], cgmUse: 80, tirPercent: 25 },
+  },
+  "Rise in Time in Range > 15%": {
+    period1: { cbgValues: [10.1, 3.9], cgmUse: 80, tirPercent: 25 },
+    period2: { cbgValues: [10.1, 3.9], cgmUse: 80, tirPercent: 1 },
+  },
+  "Time in Range < 70%": {
+    period1: { cbgValues: [10.0, 10.1], cgmUse: 80, tirPercent: 69 },
+    period2: { cbgValues: [10.0, 10.1], cgmUse: 80, tirPercent: 69 },
+  },
+  "CGM Wear Time < 70%": {
+    period1: { cbgValues: [3.8, 3.9], cgmUse: 69, tirPercent: 1 },
+    period2: { cbgValues: [3.8, 3.9], cgmUse: 69, tirPercent: 1 },
+  },
+  "CGM Wear Time < 60%": {
+    period1: { cbgValues: [3.8, 3.9], cgmUse: 59, tirPercent: 1 },
+    period2: { cbgValues: [3.8, 3.9], cgmUse: 59, tirPercent: 1 },
+  },
+  "Meeting Targets": {
+    period1: { cbgValues: [3.8, 3.9], cgmUse: 75, tirPercent: 1 },
+    period2: { cbgValues: [3.8, 3.9], cgmUse: 75, tirPercent: 1 },
+  },
+  "Drop in Time in Very Low > 15%": {
+    period1: { cbgValues: [10.1, 2.9], cgmUse: 80, tirPercent: 1 },
+    period2: { cbgValues: [10.1, 2.9], cgmUse: 80, tirPercent: 25 },
+  },
+  "Rise in Time in Very Low > 15%": {
+    period1: { cbgValues: [10.1, 2.9], cgmUse: 80, tirPercent: 25 },
+    period2: { cbgValues: [10.1, 2.9], cgmUse: 80, tirPercent: 1 },
+  },
+  "Drop in Time in Low > 15%": {
+    period1: { cbgValues: [10.1, 3.8], cgmUse: 80, tirPercent: 1 },
+    period2: { cbgValues: [10.1, 3.8], cgmUse: 80, tirPercent: 25 },
+  },
+  "Rise in Time in Low > 15%": {
+    period1: { cbgValues: [10.1, 3.8], cgmUse: 80, tirPercent: 25 },
+    period2: { cbgValues: [10.1, 3.8], cgmUse: 80, tirPercent: 1 },
+  },
+  "Drop in Time in High > 15%": {
+    period1: { cbgValues: [2.9, 10.1], cgmUse: 80, tirPercent: 1 },
+    period2: { cbgValues: [2.9, 10.1], cgmUse: 80, tirPercent: 25 },
+  },
+  "Rise in Time in High > 15%": {
+    period1: { cbgValues: [2.9, 10.1], cgmUse: 80, tirPercent: 25 },
+    period2: { cbgValues: [2.9, 10.1], cgmUse: 80, tirPercent: 1 },
+  },
+  "Drop in Time in Very High > 15%": {
+    period1: { cbgValues: [10.1, 14.0], cgmUse: 80, tirPercent: 1 },
+    period2: { cbgValues: [10.1, 14.0], cgmUse: 80, tirPercent: 25 },
+  },
+  "Rise in Time in Very High > 15%": {
+    period1: { cbgValues: [10.1, 14.0], cgmUse: 80, tirPercent: 25 },
+    period2: { cbgValues: [10.1, 14.0], cgmUse: 80, tirPercent: 1 },
+  },
+  "Very Low > 1% Time below 3.0 mmol/L": {
+    period1: { cbgValues: [2.9, 3], cgmUse: 69, tirPercent: 5 },
+    period2: { cbgValues: [2.9, 3], cgmUse: 69, tirPercent: 5 },
+  },
+  "Low > 4% Time below 3.9 mmol/L": {
+    period1: { cbgValues: [3.8, 3.9], cgmUse: 70, tirPercent: 5 },
+    period2: { cbgValues: [3.8, 3.9], cgmUse: 70, tirPercent: 5 },
+  },
+  "Highest > 1% Time above 19.4 mmol/L": {
+    period1: { cbgValues: [10.0, 19.5], cgmUse: 69, tirPercent: 98 },
+    period2: { cbgValues: [10.0, 19.5], cgmUse: 69, tirPercent: 98 },
+  },
+  "Very High > 5% Time above 13.9 mmol/L": {
+    period1: { cbgValues: [10.0, 14.0], cgmUse: 69, tirPercent: 94 },
+    period2: { cbgValues: [10.0, 14.0], cgmUse: 69, tirPercent: 94 },
+  },
+  "High > 25% Time above 10.0 mmol/L": {
+    period1: { cbgValues: [10.0, 10.1], cgmUse: 69, tirPercent: 70 },
+    period2: { cbgValues: [10.0, 10.1], cgmUse: 69, tirPercent: 70 },
+  },
+  "High > 25% Time above 10.0 mmol/L 2": {
+    period1: { cbgValues: [14.0, 10.1, 10.0], cgmUse: 69, tirPercent1: 4, tirPercent2: 22 },
+    period2: { cbgValues: [14.0, 10.1, 10.0], cgmUse: 69, tirPercent1: 4, tirPercent2: 22 },
+  },
+  "exact101_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 85, 81, 72, 25, 25] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 85, 81, 72, 25, 25] },
+  },
+  "exact99_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 73, 73, 72, 35, 35] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 73, 73, 72, 35, 35] },
+  },
+  "exact101a_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 157, 81, 25, 0, 25] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 157, 81, 25, 0, 25] },
+  },
+  "Large Drop in Time in Range > 15%": {
+    period1: { cbgValues: [10.1, 3.9], cgmUse: 80, tirPercent: 1 },
+    period2: { cbgValues: [10.1, 3.9], cgmUse: 80, tirPercent: 20 },
+  },
+  "Low Time in Range < 70%": {
+    period1: { cbgValues: [10.0, 10.1], cgmUse: 80, tirPercent: 69 },
+    period2: { cbgValues: [10.0, 10.1], cgmUse: 80, tirPercent: 69 },
+  },
+  "Low CGM Wear Time < 70%": {
+    period1: { cbgValues: [3.8, 3.9], cgmUse: 69, tirPercent: 1 },
+    period2: { cbgValues: [3.8, 3.9], cgmUse: 69, tirPercent: 1 },
+  },
 };
 
 const smbgLookup: Record<string, number[][]> = {
@@ -178,15 +204,15 @@ const smbgLowAndHighLookup: Record<string, number[][]> = {
   ],
 };
 
-const tirLookup2: Record<string, number[][]> = {
-  Low: [
-    [2.9, 2.9, 100, 100],
-    [2.9, 2.9, 100, 100],
-  ],
-  High: [
-    [10.1, 10.1, 100, 100],
-    [10.1, 10.1, 100, 100],
-  ],
+const tirLookup2: Record<string, TirLookupEntry> = {
+  Low: {
+    period1: { cbgValues: [2.9, 2.9], cgmUse: 100, tirPercent: 100 },
+    period2: { cbgValues: [2.9, 2.9], cgmUse: 100, tirPercent: 100 },
+  },
+  High: {
+    period1: { cbgValues: [10.1, 10.1], cgmUse: 100, tirPercent: 100 },
+    period2: { cbgValues: [10.1, 10.1], cgmUse: 100, tirPercent: 100 },
+  },
 };
 
 export async function createDashboard(
@@ -233,9 +259,9 @@ export async function createDashboard(
         start1,
         end1,
         clinicId,
-        tirLookup[key][0].slice(0, 2),
-        tirLookup[key][0][2],
-        tirLookup[key][0][3],
+        tirLookup[key].period1.cbgValues,
+        tirLookup[key].period1.cgmUse,
+        (tirLookup[key].period1 as TirDataBasic).tirPercent,
         patientIds[patientCounter],
         creds
       );
@@ -243,9 +269,9 @@ export async function createDashboard(
         start2,
         end2,
         clinicId,
-        tirLookup[key][1].slice(0, 2),
-        tirLookup[key][1][2],
-        tirLookup[key][1][3],
+        tirLookup[key].period2.cbgValues,
+        tirLookup[key].period2.cgmUse,
+        (tirLookup[key].period2 as TirDataBasic).tirPercent,
         patientIds[patientCounter],
         creds
       );
@@ -330,10 +356,10 @@ export async function createDashboardOffset(
           start1,
           end1,
           clinicId,
-          tirLookup[key][0].slice(0, 3),
-          tirLookup[key][0][3],
-          tirLookup[key][0][4],
-          tirLookup[key][0][5],
+          tirLookup[key].period1.cbgValues,
+          tirLookup[key].period1.cgmUse,
+          (tirLookup[key].period1 as TirData2).tirPercent1,
+          (tirLookup[key].period1 as TirData2).tirPercent2,
           patientIds[patientCounter],
           creds
         );
@@ -341,10 +367,10 @@ export async function createDashboardOffset(
           start2,
           end2,
           clinicId,
-          tirLookup[key][1].slice(0, 3),
-          tirLookup[key][1][3],
-          tirLookup[key][1][4],
-          tirLookup[key][1][5],
+          tirLookup[key].period2.cbgValues,
+          tirLookup[key].period2.cgmUse,
+          (tirLookup[key].period2 as TirData2).tirPercent1,
+          (tirLookup[key].period2 as TirData2).tirPercent2,
           patientIds[patientCounter],
           creds
         );
@@ -354,9 +380,9 @@ export async function createDashboardOffset(
           start1,
           end1,
           clinicId,
-          tirLookup[key][0].slice(0, 5),
-          tirLookup[key][0][5],
-          tirLookup[key][0].slice(7, 12),
+          tirLookup[key].period1.cbgValues,
+          tirLookup[key].period1.cgmUse,
+          (tirLookup[key].period1 as TirData3).cbgCounts,
           patientIds[patientCounter],
           creds
         );
@@ -364,9 +390,9 @@ export async function createDashboardOffset(
           start2,
           end2,
           clinicId,
-          tirLookup[key][1].slice(0, 5),
-          tirLookup[key][1][5],
-          tirLookup[key][1].slice(7, 12),
+          tirLookup[key].period2.cbgValues,
+          tirLookup[key].period2.cgmUse,
+          (tirLookup[key].period2 as TirData3).cbgCounts,
           patientIds[patientCounter],
           creds
         );
@@ -376,9 +402,9 @@ export async function createDashboardOffset(
           start1,
           end1,
           clinicId,
-          tirLookup[key][0].slice(0, 2),
-          tirLookup[key][0][2],
-          tirLookup[key][0][3],
+          tirLookup[key].period1.cbgValues,
+          tirLookup[key].period1.cgmUse,
+          (tirLookup[key].period1 as TirDataBasic).tirPercent,
           patientIds[patientCounter],
           creds
         );
@@ -386,9 +412,9 @@ export async function createDashboardOffset(
           start2,
           end2,
           clinicId,
-          tirLookup[key][1].slice(0, 2),
-          tirLookup[key][1][2],
-          tirLookup[key][1][3],
+          tirLookup[key].period2.cbgValues,
+          tirLookup[key].period2.cgmUse,
+          (tirLookup[key].period2 as TirDataBasic).tirPercent,
           patientIds[patientCounter],
           creds
         );
@@ -448,9 +474,9 @@ export async function createCGMUseDashboardOffset(
         start1,
         end1,
         clinicId,
-        tirLookup[key][0].slice(0, 2),
+        tirLookup[key].period1.cbgValues,
         cgmUse,
-        tirLookup[key][0][3],
+        (tirLookup[key].period1 as TirDataBasic).tirPercent,
         patientIds[patientCounter],
         creds
       );
@@ -459,9 +485,9 @@ export async function createCGMUseDashboardOffset(
         start2,
         end2,
         clinicId,
-        tirLookup[key][1].slice(0, 2),
+        tirLookup[key].period2.cbgValues,
         cgmUse,
-        tirLookup[key][1][3],
+        (tirLookup[key].period2 as TirDataBasic).tirPercent,
         patientIds[patientCounter],
         creds
       );
@@ -481,17 +507,17 @@ export async function createDSAData(key: string, periodLength: number, offsetTim
   await uploadToCustodial.uploadToDSA(
     start1,
     end1,
-    tirLookup[key][0].slice(0, 2),
-    tirLookup[key][0][2],
-    tirLookup[key][0][3],
+    tirLookup[key].period1.cbgValues,
+    tirLookup[key].period1.cgmUse,
+    (tirLookup[key].period1 as TirDataBasic).tirPercent,
     creds
   );
   await uploadToCustodial.uploadToDSA(
     start2,
     end2,
-    tirLookup[key][1].slice(0, 2),
-    tirLookup[key][1][2],
-    tirLookup[key][1][3],
+    tirLookup[key].period2.cbgValues,
+    tirLookup[key].period2.cgmUse,
+    (tirLookup[key].period2 as TirDataBasic).tirPercent,
     creds
   );
 }
@@ -831,9 +857,9 @@ export async function createDeviceIdDashboardOffset(
     start1,
     end1,
     clinicId,
-    tirLookup2["Low"][0].slice(0, 2),
-    tirLookup2["Low"][0][2],
-    tirLookup2["Low"][0][3],
+    tirLookup2["Low"].period1.cbgValues,
+    tirLookup2["Low"].period1.cgmUse,
+    (tirLookup2["Low"].period1 as TirDataBasic).tirPercent,
     patientIds[patientCounter],
     creds
   );
@@ -842,9 +868,9 @@ export async function createDeviceIdDashboardOffset(
     start2,
     end2,
     clinicId,
-    tirLookup2["Low"][1].slice(0, 2),
-    tirLookup2["Low"][0][2],
-    tirLookup2["Low"][1][3],
+    tirLookup2["Low"].period2.cbgValues,
+    tirLookup2["Low"].period1.cgmUse,
+    (tirLookup2["Low"].period2 as TirDataBasic).tirPercent,
     patientIds[patientCounter],
     creds
   );
@@ -857,9 +883,9 @@ export async function createDeviceIdDashboardOffset(
     start1_,
     end1_,
     clinicId,
-    tirLookup2["High"][0].slice(0, 2),
-    tirLookup2["High"][0][2],
-    tirLookup2["High"][0][3],
+    tirLookup2["High"].period1.cbgValues,
+    tirLookup2["High"].period1.cgmUse,
+    (tirLookup2["High"].period1 as TirDataBasic).tirPercent,
     patientIds[patientCounter],
     creds
   );
@@ -868,9 +894,9 @@ export async function createDeviceIdDashboardOffset(
     start2_,
     end2_,
     clinicId,
-    tirLookup2["High"][1].slice(0, 2),
-    tirLookup2["High"][0][2],
-    tirLookup2["High"][1][3],
+    tirLookup2["High"].period2.cbgValues,
+    tirLookup2["High"].period1.cgmUse,
+    (tirLookup2["High"].period2 as TirDataBasic).tirPercent,
     patientIds[patientCounter],
     creds
   );
