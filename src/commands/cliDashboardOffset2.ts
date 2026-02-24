@@ -124,6 +124,118 @@ export default class UserDashboardOffset2 extends BaseCommand<typeof UserDashboa
       description: "High > 25% Time above 10.0 mmol/L 2",
       default: 0,
     }),
+    low5: Flags.integer({
+      char: "x",
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+    low6: Flags.integer({
+      char: "y",
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+    low7: Flags.integer({
+      char: "z",
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     verylow2: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     verylow4: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
+    ,
+     verylow3: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
+    ,
+     drop20: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     drop15: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
+    ,
+     drop17: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     high30: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     high26: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
+    ,
+     high28: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+      veryhigh8: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     veryhigh6: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
+    ,
+     veryhigh7: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+      cgm60: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     cgm20: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
+    ,
+     cgm40: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+    meetingtargets100: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    }),
+     meetingtargets95: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
+    ,
+     meetingtargets90: Flags.integer({
+      
+      description: "High > 25% Time above 10.0 mmol/L 2",
+      default: 0,
+    })
   };
 
   public async run(): Promise<void> {
@@ -131,6 +243,27 @@ export default class UserDashboardOffset2 extends BaseCommand<typeof UserDashboa
     this.recordHistory();
 
     const tirCounts: Record<string, number> = {
+          "meetingtargets100_3": flags.meetingtargets100,
+      "meetingtargets90_3": flags.meetingtargets90,
+       "meetingtargets95_3": flags.meetingtargets95,
+        "cgm60_3": flags.cgm60,
+      "cgm40_3": flags.cgm20,
+       "cgm20_3": flags.cgm40,
+      "veryhigh8_3": flags.veryhigh8,
+      "veryhigh6_3": flags.veryhigh6,
+       "veryhigh7_3": flags.veryhigh7,
+       "high30_3": flags.high30,
+      "high26_3": flags.high26,
+       "high28_3": flags.high28,
+      "drop20_3": flags.drop20,
+      "drop15_3": flags.drop15,
+       "drop17_3": flags.drop17,
+       "verylow3_3": flags.verylow3,
+      "verylow2_3": flags.verylow2,
+      "verylow4_3": flags.verylow4,
+      "low5_3": flags.low5,
+      "low7_3": flags.low7,
+       "low6_3": flags.low6,
       "exact101_3": flags.exact101,
       "exact99_3": flags.exact99,
       "Time below 3.0 mmol/L > 1%": flags.below3,

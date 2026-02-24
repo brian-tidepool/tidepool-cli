@@ -125,16 +125,102 @@ const tirLookup: Record<string, TirLookupEntry> = {
     period2: { cbgValues: [14.0, 10.1, 10.0], cgmUse: 69, tirPercent1: 4, tirPercent2: 22 },
   },
   "exact101_3": {
-    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 85, 81, 72, 25, 25] },
-    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 85, 81, 72, 25, 25] },
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [85, 81, 72, 25,25] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [85, 81, 72, 25,25] },
   },
   "exact99_3": {
-    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 73, 73, 72, 35, 35] },
-    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 73, 73, 72, 35, 35] },
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [ 73, 73, 72, 35,35] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [ 73, 73, 72, 35,35] },
   },
   "exact101a_3": {
-    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 157, 81, 25, 0, 25] },
-    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [100, 157, 81, 25, 0, 25] },
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [157, 81, 25, 0, 25] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [157, 81, 25, 0,25] },
+  },
+  "verylow2_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [6, 0, 282, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [6, 0, 282, 0, 0] },
+  },
+  "verylow4_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [12, 0, 276, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [12, 0, 276, 0, 0] },
+  },
+  "verylow3_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [9, 0, 279, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [9, 0, 279, 0, 0] },
+  },
+   "low5_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 13, 273, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 13, 273, 0, 0] },
+  },
+    "low7_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 19, 267, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 19, 267, 0, 0] },
+  },
+     "low6_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 16, 270, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 16, 270, 0, 0] },
+  },
+    "drop20_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 231, 57, 0] },
+  },
+    "drop15_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 243, 45, 0] },
+  },
+     "drop17_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 239, 49, 0] },
+  },
+    "high30_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 202, 86, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 202, 86, 0] },
+  },
+    "high26_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 213, 75, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 213, 75, 0] },
+  },
+     "high28_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 207,81, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 207, 81, 0] },
+  },
+    "veryhigh8_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 265, 0, 23] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 265, 0, 23] },
+  },
+    "veryhigh6_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 271, 0, 17] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 271, 0, 17] },
+  },
+     "veryhigh7_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 268,0, 20] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 268,0, 20] },
+  },
+  
+    "cgm60_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 172, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 172, 0, 0] },
+  },
+    "cgm20_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 57, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 57, 0, 0] },
+  },
+     "cgm40_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 115,0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 115,0, 0] },
+  },
+   
+    "meetingtargets100_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
+  },
+    "meetingtargets90_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 259, 29, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 259, 29, 0] },
+  },
+     "meetingtargets95_3": {
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 274,14, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 274,14, 0] },
   },
   "Large Drop in Time in Range > 15%": {
     period1: { cbgValues: [10.1, 3.9], cgmUse: 80, tirPercent: 1 },
