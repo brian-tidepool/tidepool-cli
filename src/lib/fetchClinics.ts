@@ -6,6 +6,7 @@ export interface ClinicData {
   clinic: {
     id: string;
     name: string;
+    shareCode?: string;
   };
 }
 
