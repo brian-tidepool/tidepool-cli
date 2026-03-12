@@ -104,7 +104,8 @@ export async function authenticateAndUploadData(
     });
 
     if (!uploadResponse.ok) {
-      throw new Error(`Data upload failed: ${uploadResponse.status} ${uploadResponse.statusText}`);
+      const errorBody = await uploadResponse.text();
+      throw new Error(`Data upload failed: ${uploadResponse.status} ${uploadResponse.statusText}. Response body: ${errorBody}`);
     }
 
     // Step 4: Close the upload session
@@ -200,7 +201,8 @@ export async function authenticateAndUploadDataDSA(
     });
 
     if (!uploadResponse.ok) {
-      throw new Error(`Data upload failed: ${uploadResponse.status} ${uploadResponse.statusText}`);
+      const errorBody = await uploadResponse.text();
+      throw new Error(`Data upload failed: ${uploadResponse.status} ${uploadResponse.statusText}. Response body: ${errorBody}`);
     }
 
     // Step 4: Close the upload session

@@ -39,6 +39,10 @@ export async function cbgPayload(
 
   result.forEach((day: string[][]) => {
     day.forEach((date: string[]) => {
+      // Skip if date is undefined (padding from resizeAndAdd3D)
+      if (date[0] === undefined) {
+        return;
+      }
       const dataPoint: CbgDataPoint = { ...structuredClone(jsonData) };
       dataPoint.time = date[0];
       dataPoint.value = Number(date[1]);
