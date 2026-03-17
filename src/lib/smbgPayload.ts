@@ -42,12 +42,19 @@ export async function smbgPayload(
   const payload: SmbgDataPoint[] = [];
 
   result.forEach((day: string[][], dayIndex: number) => {
+    // Find the actual start time of this day from the first valid date
+    let dayStart: Date | null = null;
+    for (const date of day) {
+      if (date[0] !== undefined) {
+        dayStart = new Date(date[0]);
+        break;
+      }
+    }
+    
     day.forEach((date: string[], valueIndex: number) => {
       // If date is undefined but value exists, generate a date for this reading
-      if (date[0] === undefined && date[1] !== undefined) {
+      if (date[0] === undefined && date[1] !== undefined && dayStart) {
         // Calculate a timestamp by distributing readings evenly across the day
-        const dayStart = new Date(startDate);
-        dayStart.setDate(dayStart.getDate() + dayIndex);
         const millisecondsPerReading = (24 * 60 * 60 * 1000) / smbgValues.length;
         const timestamp = new Date(dayStart.getTime() + valueIndex * millisecondsPerReading);
         date[0] = timestamp.toISOString();
