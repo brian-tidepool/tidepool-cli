@@ -42,21 +42,25 @@ export async function smbgPayload(
   const payload: SmbgDataPoint[] = [];
 
   result.forEach((day: string[][], dayIndex: number) => {
-    // Find the actual start time of this day from the first valid date
-    let dayStart: Date | null = null;
+    // Find the last valid date in this day and count real dates
+    let lastRealDate: Date | null = null;
+    let realDateCount = 0;
     for (const date of day) {
       if (date[0] !== undefined) {
-        dayStart = new Date(date[0]);
-        break;
+        lastRealDate = new Date(date[0]);
+        realDateCount++;
       }
     }
     
+    // Calculate how many synthetic dates we need and ensure proper spacing
+    const syntheticCount = smbgValues.length - realDateCount;
+    
     day.forEach((date: string[], valueIndex: number) => {
       // If date is undefined but value exists, generate a date for this reading
-      if (date[0] === undefined && date[1] !== undefined && dayStart) {
-        // Calculate a timestamp by distributing readings evenly across the day
-        const millisecondsPerReading = (24 * 60 * 60 * 1000) / smbgValues.length;
-        const timestamp = new Date(dayStart.getTime() + valueIndex * millisecondsPerReading);
+      if (date[0] === undefined && date[1] !== undefined && lastRealDate && syntheticCount > 0) {
+        // Start synthetic timestamps after the last real one, with at least 5 minute spacing
+        const minutesSinceLastReal = 5 + ((valueIndex - realDateCount) * 5);
+        const timestamp = new Date(lastRealDate.getTime() + minutesSinceLastReal * 60 * 1000);
         date[0] = timestamp.toISOString();
       }
       
