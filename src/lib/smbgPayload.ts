@@ -41,10 +41,20 @@ export async function smbgPayload(
   const { default: jsonData } = await import('../data/smbg.json', { with: { type: 'json' } });
   const payload: SmbgDataPoint[] = [];
 
-  result.forEach((day: string[][]) => {
-    day.forEach((date: string[]) => {
-      // Skip if date is undefined (padding from resizeAndAdd3D)
-      if (date[0] === undefined) {
+  result.forEach((day: string[][], dayIndex: number) => {
+    day.forEach((date: string[], valueIndex: number) => {
+      // If date is undefined but value exists, generate a date for this reading
+      if (date[0] === undefined && date[1] !== undefined) {
+        // Calculate a timestamp by distributing readings evenly across the day
+        const dayStart = new Date(startDate);
+        dayStart.setDate(dayStart.getDate() + dayIndex);
+        const millisecondsPerReading = (24 * 60 * 60 * 1000) / smbgValues.length;
+        const timestamp = new Date(dayStart.getTime() + valueIndex * millisecondsPerReading);
+        date[0] = timestamp.toISOString();
+      }
+      
+      // Skip if either date or value is undefined
+      if (date[0] === undefined || date[1] === undefined) {
         return;
       }
       const dataPoint: SmbgDataPoint = { ...structuredClone(jsonData) };
