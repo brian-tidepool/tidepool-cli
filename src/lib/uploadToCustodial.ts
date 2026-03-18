@@ -103,7 +103,13 @@ export async function uploadSMBGToCustodial(
   interval: number
 ) {
   const increment = 5; // 5 minute intervals
-  const fullSmbgValues = smbgPayload.generateExactAverageBounded(smbgReadingsPerDay, smbgAverage);
+  
+  // Calculate total number of days in the period
+  const totalDays = Math.ceil((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000));
+  
+  // Generate total readings for the entire period (readings per day * number of days)
+  const totalReadings = smbgReadingsPerDay * totalDays;
+  const fullSmbgValues = smbgPayload.generateExactAverageBounded(totalReadings, smbgAverage);
 
   const smbgPayloadValues = await smbgPayload.smbgPayload(start, end, increment, fullSmbgValues);
   const { default: dataSet } = await import("../data/dataset.json", {
