@@ -16,8 +16,8 @@ export function generateDateArray2D(
   while (currentDate < endDate) {
     const dayRow: Date[] = [];
     const dayStart = new Date(currentDate);
-    const dayEnd = new Date(currentDate);
-    dayEnd.setDate(dayStart.getDate() + 1);
+    // Use milliseconds to avoid DST issues
+    const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
     const dayIterator = new Date(dayStart);
     while (dayIterator < endDate && dayIterator < dayEnd) {
       dayRow.push(new Date(dayIterator));

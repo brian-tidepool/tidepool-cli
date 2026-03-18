@@ -641,7 +641,11 @@ export async function createSMBGDashboardOffset(
   let tagResult = addTag.addTag(creds, clinicId, patientIds, tagId);
   await utils.sleep(20000);
   let patientCounter = 0;
+  
+  // Align to midnight UTC to ensure consistent day counts
   const end = new Date(Date.now() - offsetTimeMinutes * 60000);
+  end.setUTCHours(0, 0, 0, 0);
+  
   const start2 = new Date(end.getTime() - 1440 * periodLength * 60000);
   const end2 = new Date(end.getTime());
   const start1 = new Date(end.getTime() - 1440 * 2 * periodLength * 60000);
