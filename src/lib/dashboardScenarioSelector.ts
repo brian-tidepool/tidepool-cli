@@ -149,16 +149,16 @@ const tirLookup: Record<string, TirLookupEntry> = {
     period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [9, 0, 279, 0, 0] },
   },
    "low5_3": {
-    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 13, 273, 0, 0] },
-    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 13, 273, 0, 0] },
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [1, 14, 273, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [1, 14, 273, 0, 0] },
   },
     "low7_3": {
-    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 19, 267, 0, 0] },
-    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 19, 267, 0, 0] },
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [1, 20, 267, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [1, 20, 267, 0, 0] },
   },
      "low6_3": {
-    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 16, 270, 0, 0] },
-    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [2, 16, 270, 0, 0] },
+    period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [1, 17, 270, 0, 0] },
+    period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [1, 17, 270, 0, 0] },
   },
     "drop20_3": {
     period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
