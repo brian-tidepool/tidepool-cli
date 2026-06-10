@@ -12,21 +12,24 @@ export function generateDateArray2D(
   incrementMinutes: number
 ): Date[][] {
   const result: Date[][] = [];
-  let currentDate = new Date(startDate);
-  while (currentDate < endDate) {
+  // Work entirely in absolute milliseconds. Using fixed ms steps (rather than
+  // Date.setMinutes, which does local-time arithmetic) keeps every day at exactly
+  // 24h / (1440 / incrementMinutes) points even across DST transitions — e.g. a
+  // fall-back day would otherwise lose an hour of points.
+  const incrementMs = incrementMinutes * 60 * 1000;
+  const dayMs = 24 * 60 * 60 * 1000;
+  const endMs = endDate.getTime();
+  let dayStartMs = startDate.getTime();
+  while (dayStartMs < endMs) {
     const dayRow: Date[] = [];
-    const dayStart = new Date(currentDate);
-    // Use milliseconds to avoid DST issues
-    const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
-    const dayIterator = new Date(dayStart);
-    while (dayIterator < endDate && dayIterator < dayEnd) {
-      dayRow.push(new Date(dayIterator));
-      dayIterator.setMinutes(dayIterator.getMinutes() + incrementMinutes);
+    const dayEndMs = dayStartMs + dayMs;
+    for (let t = dayStartMs; t < dayEndMs && t < endMs; t += incrementMs) {
+      dayRow.push(new Date(t));
     }
     if (dayRow.length > 0) {
       result.push(dayRow);
     }
-    currentDate = new Date(dayIterator);
+    dayStartMs += dayMs;
   }
   return result;
 }

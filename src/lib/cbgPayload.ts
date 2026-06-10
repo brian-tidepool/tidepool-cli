@@ -55,6 +55,53 @@ export async function cbgPayload(
 }
 
 /**
+ * Like {@link cbgPayload}, but takes an explicit per-day distribution instead of a
+ * single repeated day. `cbgCountsPerDay` holds one subarray per day, each indexed by
+ * `cbgValues` (e.g. for a 5-value scenario every subarray has length 5 and typically
+ * sums to 288 readings at 5-minute intervals). Day `i` in the date range is filled
+ * from `cbgCountsPerDay[i]`, so the function adapts to any number of days — the day
+ * count is whatever the date range produces; days without a matching subarray are skipped.
+ * @param startDate - Start date of the data
+ * @param endDate - End date of the data (exclusive)
+ * @param incrementMinutes - Interval in minutes between data points
+ * @param cbgValues - The CBG values that each per-day subarray indexes into
+ * @param cbgCountsPerDay - One subarray of counts per day, each indexed by `cbgValues`
+ * @returns Promise resolving to an array of CBG data points
+ */
+export async function cbgPayloadPerDay(
+  startDate: Date,
+  endDate: Date,
+  incrementMinutes: number,
+  cbgValues: number[],
+  cbgCountsPerDay: number[][],
+  deviceId?: number
+): Promise<CbgDataPoint[]> {
+  const dateArray = dateGenerator.generateDateArray2D(startDate, endDate, incrementMinutes);
+
+  // Dynamically import the CBG template JSON
+  const { default: jsonData } = await import("../data/cbg.json", { with: { type: "json" } });
+  const payload: CbgDataPoint[] = [];
+
+  dateArray.forEach((dayDates, dayIndex) => {
+    const dayCounts = cbgCountsPerDay[dayIndex];
+    if (!dayCounts) {
+      return; // no distribution supplied for this day — leave it empty
+    }
+    const dayValues = duplicateEntries(cbgValues, dayCounts);
+    const length = Math.min(dayDates.length, dayValues.length);
+    for (let i = 0; i < length; i++) {
+      const dataPoint: CbgDataPoint = { ...structuredClone(jsonData) };
+      dataPoint.time = dayDates[i].toISOString();
+      dataPoint.value = dayValues[i];
+      dataPoint.deviceId = dataPoint.deviceId + (deviceId?.toString() ?? "");
+      payload.push(dataPoint);
+    }
+  });
+
+  return payload;
+}
+
+/**
  * Utility function to duplicate entries in an array according to a counts array.
  * @param sourceArray - The array of items to duplicate
  * @param countsArray - The number of times to duplicate each item

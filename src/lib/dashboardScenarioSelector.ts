@@ -28,7 +28,16 @@ interface TirData3 {
   cbgCounts: number[];
 }
 
-type TirData = TirDataBasic | TirData2 | TirData3;
+// Like TirData3, but cbgCounts is specified per day: one subarray per day, each
+// indexed by cbgValues. The number of days is cbgCounts.length, so the scenario
+// works for any period length.
+interface TirData4 {
+  cbgValues: number[];
+  cgmUse: number;
+  cbgCounts: number[][];
+}
+
+type TirData = TirDataBasic | TirData2 | TirData3 | TirData4;
 
 interface TirLookupEntry {
   period1: TirData;
@@ -167,6 +176,348 @@ const tirLookup: Record<string, TirLookupEntry> = {
     "drop15_3": {
     period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
     period2: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 243, 45, 0] },
+  },
+  // Per-day (TirData4) 14-day scenarios, uploaded by createPerDayDashboardOffset.
+  // Each key is named "2.9-<a>_3.1-<b>", where <a> is the percentage of readings in the
+  // 2.9 bucket and <b> is the TOTAL below-range percentage (2.9 bucket + 3.1 bucket).
+  // So the 3.1 bucket itself holds (<b> - <a>) percent. cbgCounts has one subarray per
+  // day, each indexed by cbgValues and summing to 288 (5-min intervals); over 14 days
+  // that is 4032 readings total, so the totals approximate the named percentages.
+  "2.9-0.4_3.1-3.2": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 9, 277, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 9, 277, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+      ],
+    },
+  },
+  "2.9-0.6_3.1-3.5": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 9, 277, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [2, 8, 278, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+        [1, 8, 279, 0, 0],
+      ],
+    },
+  },
+  "2.9-1_3.1-5.2": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [3, 13, 272, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [2, 12, 274, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [3, 13, 272, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [3, 12, 273, 0, 0],
+        [2, 12, 274, 0, 0],
+      ],
+    },
+  },
+  "2.9-1.4_3.1-6.1": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [5, 14, 269, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [5, 14, 269, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 14, 270, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+        [4, 13, 271, 0, 0],
+      ],
+    },
+  },
+  "2.9-0_3.1-4": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 12, 276, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+        [0, 11, 277, 0, 0],
+      ],
+    },
+  },
+  "2.9-0.3_3.1-4.6": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [0, 12, 276, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 13, 274, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [1, 12, 275, 0, 0],
+        [0, 12, 276, 0, 0],
+      ],
+    },
+  },
+  "2.9-0.5_3.1-3.9": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 9, 278, 0, 0],
+        [1, 9, 278, 0, 0],
+        [1, 9, 278, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [2, 10, 276, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 10, 277, 0, 0],
+        [1, 9, 278, 0, 0],
+        [1, 9, 278, 0, 0],
+        [1, 9, 278, 0, 0],
+      ],
+    },
+  },
+  "2.9-0.51_3.1-4.01": {
+    period1: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 9, 269, 0, 0],
+        [1, 9, 269, 0, 0],
+        [1, 9, 269, 0, 0],
+      ],
+    },
+    period2: {
+      cbgValues: [2.9, 3.1, 4, 10.2, 14],
+      cgmUse: 100,
+      cbgCounts: [
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [2, 10, 267, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 10, 268, 0, 0],
+        [1, 9, 269, 0, 0],
+        [1, 9, 269, 0, 0],
+        [1, 9, 269, 0, 0],
+      ],
+    },
   },
      "drop17_3": {
     period1: { cbgValues: [2.9, 3.1, 4, 10.2, 14], cgmUse: 10.0, cbgCounts: [0, 0, 288, 0, 0] },
@@ -506,6 +857,87 @@ export async function createDashboardOffset(
         );
         patientCounter++;
       }
+    }
+  }
+}
+
+/**
+ * Like {@link createDashboardOffset}, but for the per-day scenarios (e.g. "drop15_14_3")
+ * whose entries use {@link TirData4} — cbgCounts is a 2D array with one subarray per day.
+ * Each period's length is derived from its own cbgCounts.length, so this uploads any
+ * number of days. period1 sits immediately before period2 on the timeline.
+ */
+export async function createPerDayDashboardOffset(
+  tirCounts: Record<string, number>,
+  offsetTimeMinutes: number,
+  patientName: string,
+  clinicId: string,
+  tagId: string,
+  creds: Credentials
+) {
+  let patientIds = [];
+  console.log("Creating patients");
+  let counter = 0;
+  for (const key in tirCounts) {
+    for (let i = 0; i < tirCounts[key]; i++) {
+      let payload = {
+        password: "tidepool",
+        birthDate: "2000-01-01",
+        fullName: `${key}  ${counter}`,
+        tags: [],
+        connectDexcom: false,
+      };
+      let patientId = await createPatient.createPatient<typeof payload>(creds, clinicId, payload);
+      counter++;
+      if (patientId) {
+        patientIds.push(patientId);
+      }
+    }
+  }
+
+  let tagResult = addTag.addTag(creds, clinicId, patientIds, tagId);
+  await utils.sleep(20000);
+  let patientCounter = 0;
+
+  for (const key in tirCounts) {
+    for (let i = 0; i < tirCounts[key]; i++) {
+      const period1 = tirLookup[key].period1 as TirData4;
+      const period2 = tirLookup[key].period2 as TirData4;
+
+      // Each period spans as many days as its cbgCounts has subarrays; period1 ends
+      // where period2 begins so the two windows are adjacent.
+      const period1Days = period1.cbgCounts.length;
+      const period2Days = period2.cbgCounts.length;
+      const end2 = new Date(Date.now() - offsetTimeMinutes * 60000);
+      const start2 = new Date(end2.getTime() - 1440 * period2Days * 60000);
+      const end1 = new Date(start2.getTime());
+      const start1 = new Date(end1.getTime() - 1440 * period1Days * 60000);
+
+      console.log("patientId", patientIds[patientCounter]);
+      console.log("tir category", key);
+      console.log("end of upload", end2);
+
+      await uploadToCustodial.uploadToCustodialPerDay(
+        start1,
+        end1,
+        clinicId,
+        period1.cbgValues,
+        period1.cgmUse,
+        period1.cbgCounts,
+        patientIds[patientCounter],
+        creds
+      );
+      await uploadToCustodial.uploadToCustodialPerDay(
+        start2,
+        end2,
+        clinicId,
+        period2.cbgValues,
+        period2.cgmUse,
+        period2.cbgCounts,
+        patientIds[patientCounter],
+        creds
+      );
+      patientCounter++;
     }
   }
 }

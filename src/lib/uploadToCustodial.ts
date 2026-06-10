@@ -405,3 +405,41 @@ export async function uploadToCustodial3(
     console.log("Failed to create post");
   }
 }
+
+/**
+ * Like {@link uploadToCustodial3}, but `cbgCountsPerDay` is a 2D array describing each
+ * day individually: one subarray per day, each indexed by `cbgValues` (typically summing
+ * to 288 readings/day at 5-minute intervals). The number of days uploaded is simply
+ * `cbgCountsPerDay.length`, so this works for any period length (see
+ * {@link cbgPayload.cbgPayloadPerDay}).
+ */
+export async function uploadToCustodialPerDay(
+  start: Date,
+  end: Date,
+  clinicIdParam: string,
+  cbgValues: number[],
+  cgmUse: number,
+  cbgCountsPerDay: number[][],
+  userIdParam: string,
+  credentials: Credentials
+) {
+  const increment = 5; // 5 minute intervals
+
+  const cbgPayloadValues = await cbgPayload.cbgPayloadPerDay(start, end, increment, cbgValues, cbgCountsPerDay);
+  const { default: dataSet } = await import("../data/dataset.json", {
+    with: { type: "json" },
+  });
+
+  const result = await authenticateAndUploadData(
+    credentials,
+    cbgPayloadValues as UploadPostDataPayload,
+    dataSet as UploadDataSet,
+    userIdParam
+  );
+
+  if (result) {
+    console.log("Successfully created post with ID:", result);
+  } else {
+    console.log("Failed to create post");
+  }
+}
